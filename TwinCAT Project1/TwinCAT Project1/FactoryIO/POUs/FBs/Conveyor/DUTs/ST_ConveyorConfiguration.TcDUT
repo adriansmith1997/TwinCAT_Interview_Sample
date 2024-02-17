@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ConveyorConfiguration" Id="{5acd185f-952f-48c5-ba61-abf9676e48b6}">
+    <Declaration><![CDATA[TYPE ST_ConveyorConfiguration :
+	STRUCT
+		Name 				: STRING := 'Conveyor'; 	// Name of the conveyor
+		HardwareOutput 		: DINT;						// What position in the TCP/IP array this Bit is connected to for the simulationm
+		OutputArrayPosition	: DINT;						// Equal to HardwareOutput - 32768
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

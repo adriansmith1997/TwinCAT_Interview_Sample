@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{cce1ce5c-87e1-4385-9a95-467ea156069a}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <DownloadApplicationInfo>true</DownloadApplicationInfo>
+    <WriteProductVersion>true</WriteProductVersion>
+    <GenerateTpy>false</GenerateTpy>
+    <Name>FactoryIO</Name>
+    <ProgramVersion>3.1.4024.0</ProgramVersion>
+    <Application>{faab1256-f0ea-49e6-8c16-a9be5ff14059}</Application>
+    <TypeSystem>{d44efc7e-b514-4984-9a4f-d07f68be881b}</TypeSystem>
+    <Implicit_Task_Info>{bcf77f2b-23b3-4478-8f3d-27547136d8f5}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{8fc95610-e44d-44e5-9860-df338e202201}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{cc4aa480-abc6-40de-9fcd-454b58a01ef5}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{fc693289-f685-4047-aa21-8025280fffdf}</LibraryReferences>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="GVLs\GVL.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Conveyor\DUTs\E_ConveyorStates.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Conveyor\DUTs\ST_ConveyorConfiguration.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Conveyor\DUTs\ST_ConveyorControls.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Conveyor\DUTs\ST_ConveyorStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\Conveyor\FB_Conveyor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\IndexedPosition\DUTs\E_IndexedPositionStates.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\IndexedPosition\DUTs\E_IndexedPositionTransitionRequest.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\IndexedPosition\DUTs\ST_IndexedPositionControls.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\IndexedPosition\DUTs\ST_IndexedPositionLinks.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\IndexedPosition\FB_IndexedPosition.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\LTU\DUTs\E_LTUHardwareState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\LTU\DUTs\ST_LTUConfiguration.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\LTU\DUTs\ST_LTUStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\LTU\FB_LTU.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PalletStop\DUTs\E_PalletStopHardwareStates.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PalletStop\DUTs\ST_PalletStopConfiguration.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PalletStop\DUTs\ST_PalletStopStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PalletStop\FB_PalletStop.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PartPresence\DUTs\E_ActivationType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PartPresence\DUTs\ST_PartPresenceConfiguration.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PartPresence\DUTs\ST_PartPresenceStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\PartPresence\FB_PartPresence.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DUTs" />
+    <Folder Include="GVLs" />
+    <Folder Include="POUs\FBs\Conveyor" />
+    <Folder Include="POUs\FBs\Conveyor\DUTs" />
+    <Folder Include="POUs\FBs\IndexedPosition\DUTs" />
+    <Folder Include="POUs\FBs\LTU" />
+    <Folder Include="POUs\FBs" />
+    <Folder Include="POUs\FBs\LTU\DUTs" />
+    <Folder Include="POUs\FBs\IndexedPosition" />
+    <Folder Include="POUs\FBs\PalletStop" />
+    <Folder Include="POUs\FBs\PalletStop\DUTs" />
+    <Folder Include="POUs\FBs\PartPresence" />
+    <Folder Include="POUs\FBs\PartPresence\DUTs" />
+    <Folder Include="POUs\FBs\RFID" />
+    <Folder Include="POUs\DUTs" />
+    <Folder Include="VISUs" />
+    <Folder Include="POUs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="Tc2_ModbusSrv">
+      <DefaultResolution>Tc2_ModbusSrv, * (Beckhoff Automation GmbH)</DefaultResolution>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Standard">
+      <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Standard</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_System">
+      <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Module">
+      <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Module</Namespace>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FactoryIO.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" />
+      <d n="Values" t="Hashtable" />
+    </o>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

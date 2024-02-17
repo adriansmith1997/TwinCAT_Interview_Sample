@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_IndexedPositionLinks" Id="{e30ffb78-c0b7-406f-978a-b16632593a4c}">
+    <Declaration><![CDATA[TYPE ST_IndexedPositionLinks :
+	STRUCT
+		Upstream			: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
+		DownstreamForward	: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
+		DownstreamLeft 		: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
+		DownstreamRight		: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

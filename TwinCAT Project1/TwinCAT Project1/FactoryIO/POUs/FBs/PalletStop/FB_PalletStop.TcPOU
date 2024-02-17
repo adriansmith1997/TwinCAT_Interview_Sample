@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_PalletStop" Id="{cd29b529-bf00-4cf7-b53d-66826a23232d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC FB_PalletStop EXTENDS FB_IndexedPosition
+
+VAR_IN_OUT
+	HardwareInputArray 	: ARRAY [*] OF BOOL;		// For Actuators
+	//Upstream			: DWORD;
+	//Downstream			: DWORD;
+END_VAR
+
+VAR
+	Configuration 			: ST_PalletStopConfiguration;
+	Status					: ST_PalletStopStatus;
+	InitDone 				: BOOL := FALSE;
+	PalletStopHardwareState	: DINT := E_PalletStopHardwareStates.Lowered;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT InitDone THEN
+	M_Init();
+	InitDone:= TRUE;
+ELSE
+	SUPER^();
+	M_Cyclic();
+	M_StateMachine();
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="M_Cyclic" Id="{40493c72-3c09-41b8-996c-78bd5f629286}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Cyclic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Controls.isDefined := TRUE; // I exist
+Configuration.DownstreamOutputArrayPosition 	:= Configuration.DownstreamHardwareOutput - 32768;
+HardwareInputArray[Configuration.DownstreamOutputArrayPosition] 	:= SEL( PalletStopHardwareState = E_PalletStopHardwareStates.Raised OR PalletStopHardwareState = E_PalletStopHardwareStates.Raising, FALSE, TRUE);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Init" Id="{6260de79-2222-47bf-8a95-b48de7f82031}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_StateMachine" Id="{411c2fb1-1cb8-41e6-97da-553355b7df91}">
+      <Declaration><![CDATA[METHOD PRIVATE M_StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(*IF Configuration.BypassLTU THEN
+	State := E_LTUStates.Bypass;
+ELSE
+	State := E_LTUStates.Idle;
+END_IF*)
+
+CASE SUPER^.Controls.State OF 
+// Would be better as a raise and lower requestr, followed by sensor confirmation that the Pallet Stop was raised or lowered, but no feedback from the simulation :(
+	E_IndexedPositionStates.ReceivingForward, E_IndexedPositionStates.Idle:
+		PalletStopHardwareState := E_PalletStopHardwareStates.Raised;
+		
+	E_IndexedPositionStates.SendingForward, E_IndexedPositionStates.Starved:
+		PalletStopHardwareState := E_PalletStopHardwareStates.Lowered;
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_Configuration" Id="{83c6bb9f-3150-4335-b964-a41cdeea8c04}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Configuration : REFERENCE TO ST_PalletStopConfiguration]]></Declaration>
+      <Get Name="Get" Id="{73ed7111-15eb-4947-acb8-898e68a1132e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Configuration REF= Configuration;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Status" Id="{0fc86d92-1a94-4d0f-a8f5-cdba67e8235e}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Status : REFERENCE TO ST_PalletStopStatus]]></Declaration>
+      <Get Name="Get" Id="{f8cfadbb-9df5-44e6-95cb-3b56b49ed259}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Status REF= Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_PalletStop">
+      <LineId Id="27" Count="6" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PalletStop.M_Cyclic">
+      <LineId Id="14" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PalletStop.M_Init">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PalletStop.M_StateMachine">
+      <LineId Id="6" Count="6" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PalletStop.P_Configuration.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PalletStop.P_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

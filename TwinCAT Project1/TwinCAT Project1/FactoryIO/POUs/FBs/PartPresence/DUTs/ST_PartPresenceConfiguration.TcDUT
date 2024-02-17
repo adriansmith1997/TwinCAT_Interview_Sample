@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_PartPresenceConfiguration" Id="{013ae85b-13d5-41bf-834d-8ee47a6474ec}">
+    <Declaration><![CDATA[TYPE ST_PartPresenceConfiguration :
+	STRUCT
+		Name 			: STRING := 'Part Presence';
+		ActivationType 	: E_ActivationType := E_ActivationType.NormallyOpen;
+		DebounceOnTime	: TIME := T#0S;
+		DebounceOffTime	: TIME := T#0S;
+		
+		HardwareInput 		: BOOL;			// Mapped directly from the array
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_PalletStopConfiguration" Id="{88e36c94-6ba7-4eda-832d-f947658a24a7}">
+    <Declaration><![CDATA[TYPE ST_PalletStopConfiguration :
+	STRUCT
+		Name 							: STRING := 'PalletStop'; 	// Name of the PalletStop
+		DownStreamHardwareOutput 		: DINT;						// What position in the TCP/IP array this Bit is connected to for the simulationm
+		DownStreamOutputArrayPosition	: DINT;						// Equal to associated HardwareOutput - 32768
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

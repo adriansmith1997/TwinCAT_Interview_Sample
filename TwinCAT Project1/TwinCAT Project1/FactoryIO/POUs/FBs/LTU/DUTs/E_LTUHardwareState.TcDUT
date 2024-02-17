@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_LTUHardwareState" Id="{0b0806ee-50a7-4b02-85bb-3a011151da6a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_LTUHardwareState :
+(
+	NoCommand,
+	RunForward,
+	RunReverse,
+	RunLeft,
+	RunRight
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

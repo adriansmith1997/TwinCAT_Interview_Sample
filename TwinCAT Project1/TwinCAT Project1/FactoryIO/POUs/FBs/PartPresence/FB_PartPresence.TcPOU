@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_PartPresence" Id="{91d44c99-a00f-456f-9785-5068ea359f2a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC FB_PartPresence
+
+VAR_IN_OUT
+	HardwareOutputArray : ARRAY [*] OF BOOL; 	// For Sensors
+END_VAR
+
+VAR
+	Configuration 		: ST_PartPresenceConfiguration;
+	Status				: ST_PartPresenceStatus;
+	
+	InitDone 			: BOOL := FALSE;
+	
+	OnTimer				: TON;
+	OffTimer			: TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT InitDone THEN
+	M_Init();
+	InitDone:= TRUE;
+ELSE
+	M_Cyclic();
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="M_Cyclic" Id="{68a0d46e-cd53-4bd0-a175-e664883e7c6d}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Cyclic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF Configuration.ActivationType = E_ActivationType.NormallyOpen THEN
+	OnTimer.IN := Configuration.HardwareInput;
+	OnTimer.PT := Configuration.DebounceOnTime;
+	
+	OffTimer.IN := NOT Configuration.HardwareInput;
+	OffTimer.PT := Configuration.DebounceOffTime;
+	
+ELSIF Configuration.ActivationType = E_ActivationType.NormallyClosed THEN
+	OnTimer.IN := NOT Configuration.HardwareInput;
+	OnTimer.PT := Configuration.DebounceOnTime;
+	
+	OffTimer.IN := Configuration.HardwareInput;
+	OffTimer.PT := Configuration.DebounceOffTime;
+END_IF
+
+OnTimer();
+OffTimer();
+
+IF OnTimer.Q THEN
+	Status.isOn := TRUE;
+ELSIF OffTimer.Q THEN
+	Status.isOn := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Init" Id="{52915d40-941a-4dcb-b873-76110f25a70f}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Reset" Id="{b6304d0e-d4d1-434e-a2c0-0221294e00a7}">
+      <Declaration><![CDATA[METHOD PUBLIC M_Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_Configuration" Id="{40a4ce23-bf31-4469-9096-444c9507dd4b}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Configuration : REFERENCE TO ST_PartPresenceConfiguration]]></Declaration>
+      <Get Name="Get" Id="{b439ea53-4971-465a-83d3-3bf69e1f3812}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Configuration REF= Configuration;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Status" Id="{b44d4190-ebeb-4504-b3ec-016f61130c32}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Status : REFERENCE TO ST_PartPresenceStatus]]></Declaration>
+      <Get Name="Get" Id="{98c11dca-c0d5-42c3-94aa-155d13475fa7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Status REF= Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_PartPresence">
+      <LineId Id="19" Count="4" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PartPresence.M_Cyclic">
+      <LineId Id="7" Count="0" />
+      <LineId Id="25" Count="3" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="29" Count="3" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PartPresence.M_Init">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PartPresence.M_Reset">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PartPresence.P_Configuration.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PartPresence.P_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

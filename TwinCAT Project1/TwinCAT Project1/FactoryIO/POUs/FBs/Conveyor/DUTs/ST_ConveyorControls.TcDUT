@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ConveyorControls" Id="{d9de3ff4-76d7-45d8-a3ac-739e7e2dba52}">
+    <Declaration><![CDATA[TYPE ST_ConveyorControls :
+	STRUCT
+		RequestRun 		: BOOL := FALSE; // Requests the conveyance to run
+		RequestStop		: BOOL := FALSE; // Requests the conveyance to stop
+		OperationMode	: BOOL := FALSE; // TRUE = Automatic, FALSE = Manual 
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_PalletStopHardwareStates" Id="{cc85820b-912c-4f21-8645-1fe6226f0821}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_PalletStopHardwareStates :
+(
+	Raised,
+	Lowered,
+	Raising,
+	Lowering,
+	Fault
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

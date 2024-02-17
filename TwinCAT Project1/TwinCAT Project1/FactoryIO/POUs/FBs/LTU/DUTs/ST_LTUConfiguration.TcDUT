@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_LTUConfiguration" Id="{76389b48-1012-482d-9635-044ba4daa2f5}">
+    <Declaration><![CDATA[TYPE ST_LTUConfiguration :
+	STRUCT
+		Name 						: STRING := 'LTU'; 			// Name of the LTU
+		
+		ForwardHardwareOutput 		: DINT;						// What position in the TCP/IP array this Bit is connected to for the simulationm
+		ReverseHardwareOutput 		: DINT;						// What position in the TCP/IP array this Bit is connected to for the simulationm
+		LeftHardwareOutput 			: DINT;						// What position in the TCP/IP array this Bit is connected to for the simulationm
+		RightHardwareOutput 		: DINT;						// What position in the TCP/IP array this Bit is connected to for the simulationm
+		
+		ForwardOutputArrayPosition	: DINT;						// Equal to associated HardwareOutput - 32768
+		ReverseOutputArrayPosition	: DINT;						// Equal to associated HardwareOutput - 32768
+		LeftOutputArrayPosition		: DINT;						// Equal to associated HardwareOutput - 32768
+		RightOutputArrayPosition	: DINT;						// Equal to associated HardwareOutput - 32768
+		
+		BypassLTU					: BOOL := FALSE; 			// This will have the LTU spin forward continuousle
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

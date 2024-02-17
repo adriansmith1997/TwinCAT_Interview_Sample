@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_IndexedPositionControls" Id="{d7bb33da-6062-4bf2-a354-bc140dc5ad12}">
+    <Declaration><![CDATA[TYPE ST_IndexedPositionControls :
+	STRUCT
+		OperationMode		: BOOL := FALSE; // TRUE = Automatic, FALSE = Manual
+		isDefined 			: BOOL := FALSE; // Change to true if this position exists
+		
+		Request				: E_IndexedPositionTransitionRequest := E_IndexedPositionTransitionRequest.NoRequest;
+		
+		ArrivalDetection	: BOOL;
+		AreaMonitoring		: BOOL;
+		State				: E_IndexedPositionStates := E_IndexedPositionStates.Starved;
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

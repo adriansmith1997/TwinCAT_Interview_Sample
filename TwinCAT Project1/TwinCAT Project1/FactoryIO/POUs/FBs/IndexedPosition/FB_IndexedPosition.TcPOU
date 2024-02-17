@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_IndexedPosition" Id="{2f1b5667-a0f3-4b1e-97a1-207ac542be5f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC FB_IndexedPosition
+
+VAR
+	// Configuration 		: ST_IndexedPositionConfiguration;
+	Controls			: ST_IndexedPositionControls;
+	// Status				: ST_IndexedPositionStatus;
+	Links				: ST_IndexedPositionLinks;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[_M_StateMachine();
+
+// Links.Self.State := State;
+]]></ST>
+    </Implementation>
+    <Method Name="_M_StateMachine" Id="{da0ce787-3a30-4396-967f-e071a2d629b3}">
+      <Declaration><![CDATA[METHOD PRIVATE _M_StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(*IF Configuration.BypassIndexedPosition THEN
+	Controls.State := E_IndexedPositionStates.Bypass;
+ELSE
+	Controls.State := E_IndexedPositionStates.Idle;
+END_IF*)
+
+CASE Controls.State OF
+	E_IndexedPositionStates.Starved:
+		// Command 
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF NOT Controls.AreaMonitoring AND NOT Controls.ArrivalDetection THEN
+			IF Controls.Request = E_IndexedPositionTransitionRequest.ReceiveForward THEN
+				Controls.State := E_IndexedPositionStates.ReceivingForward;
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.ReceiveLeft THEN
+				Controls.State := E_IndexedPositionStates.ReceivingLeft;
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.ReceiveReverse THEN
+				Controls.State := E_IndexedPositionStates.ReceivingReverse;
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.ReceiveRight THEN
+				Controls.State := E_IndexedPositionStates.ReceivingRight;
+			END_IF
+		ELSIF Controls.AreaMonitoring OR Controls.ArrivalDetection  THEN
+			Controls.State := E_IndexedPositionStates.Idle;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+		
+	E_IndexedPositionStates.Idle:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Controls.AreaMonitoring AND Controls.ArrivalDetection  THEN
+			IF Controls.Request = E_IndexedPositionTransitionRequest.SendForward THEN
+				IF NOT Links.DownstreamForward.isDefined THEN
+					// Error, Position does not exist
+					
+				ELSIF NOT Links.DownstreamForward.AreaMonitoring AND 
+					  NOT Links.DownstreamForward.ArrivalDetection AND 
+					  Links.DownstreamForward.isDefined AND 
+					  Links.DownstreamForward.Request = E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.SendingForward;
+					
+				ELSIF Links.DownstreamForward.AreaMonitoring OR 
+					  Links.DownstreamForward.ArrivalDetection OR 
+					  Links.DownstreamForward.Request <> E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.Blocked;
+					
+				END_IF
+				
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.SendLeft THEN
+				IF NOT Links.DownstreamLeft.isDefined THEN
+					// Error, Position does not exist
+					
+				ELSIF NOT Links.DownstreamLeft.AreaMonitoring AND 
+					  NOT Links.DownstreamLeft.ArrivalDetection AND 
+					  Links.DownstreamLeft.isDefined AND 
+					  Links.DownstreamLeft.Request = E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.SendingLeft;
+					
+				ELSIF Links.DownstreamLeft.AreaMonitoring OR 
+					  Links.DownstreamLeft.ArrivalDetection OR
+					  Links.DownstreamLeft.Request <> E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.Blocked;
+				END_IF
+
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.SendReverse THEN
+				IF NOT Links.Upstream.isDefined THEN
+					// Error, Position does not exist
+					
+				ELSIF NOT Links.Upstream.AreaMonitoring AND 
+					  NOT Links.Upstream.ArrivalDetection AND 
+					  Links.Upstream.isDefined AND
+					  Links.Upstream.Request = E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.SendingReverse;
+					
+				ELSIF Links.Upstream.AreaMonitoring OR 
+					  Links.Upstream.ArrivalDetection OR
+					  Links.Upstream.Request <> E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.Blocked;
+				END_IF
+				
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.SendRight THEN
+				IF NOT Links.DownstreamRight.isDefined THEN
+					// Error, Position does not exist
+				ELSIF NOT Links.DownstreamRight.AreaMonitoring AND 
+					  NOT Links.DownstreamRight.ArrivalDetection AND 
+					  Links.DownstreamRight.isDefined AND
+					  Links.DownstreamRight.Request = E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.SendingForward;
+					
+				ELSIF Links.DownstreamRight.AreaMonitoring OR 
+					  Links.DownstreamRight.ArrivalDetection OR 
+					  Links.DownstreamRight.Request <> E_IndexedPositionTransitionRequest.NoRequest THEN
+					  
+					Controls.State := E_IndexedPositionStates.Blocked;
+				END_IF
+				
+			END_IF
+			
+		ELSIF NOT Controls.AreaMonitoring AND NOT Controls.ArrivalDetection  THEN
+			Controls.State := E_IndexedPositionStates.Starved;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+			
+		ELSIF Controls.AreaMonitoring OR Controls.ArrivalDetection  THEN
+			//
+		END_IF
+	
+	E_IndexedPositionStates.Blocked:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Controls.AreaMonitoring AND Controls.ArrivalDetection  THEN
+			IF Controls.Request = E_IndexedPositionTransitionRequest.SendForward  THEN
+				IF NOT Links.DownstreamForward.AreaMonitoring AND NOT Links.DownstreamForward.ArrivalDetection THEN
+					Controls.State := E_IndexedPositionStates.Idle;
+				END_IF
+				
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.SendLeft THEN
+				IF NOT Links.DownstreamLeft.AreaMonitoring AND NOT Links.DownstreamLeft.ArrivalDetection THEN
+					Controls.State := E_IndexedPositionStates.Idle;
+				END_IF
+
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.SendReverse THEN
+				IF NOT Links.Upstream.AreaMonitoring AND NOT Links.Upstream.ArrivalDetection THEN
+					Controls.State := E_IndexedPositionStates.Idle;
+				END_IF
+				
+			ELSIF Controls.Request = E_IndexedPositionTransitionRequest.SendRight THEN
+				IF NOT Links.DownstreamRight.AreaMonitoring AND NOT Links.DownstreamRight.ArrivalDetection THEN
+					Controls.State := E_IndexedPositionStates.Idle;
+				END_IF
+				
+			END_IF
+		ELSIF NOT Controls.AreaMonitoring AND NOT Controls.ArrivalDetection  THEN
+			// Starved or Error?
+		END_IF
+	
+	E_IndexedPositionStates.ReceivingLeft:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Controls.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Idle;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+		
+	
+	E_IndexedPositionStates.ReceivingRight:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Controls.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Idle;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+	
+	E_IndexedPositionStates.ReceivingForward:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Controls.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Idle;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+		
+	E_IndexedPositionStates.ReceivingReverse:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Controls.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Idle;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+	
+	E_IndexedPositionStates.SendingLeft:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Links.DownstreamLeft.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Starved;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+	
+	E_IndexedPositionStates.SendingRight:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Links.DownstreamRight.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Starved;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+		
+	E_IndexedPositionStates.SendingForward:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Links.DownstreamForward.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Starved;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+		
+	E_IndexedPositionStates.SendingReverse:
+		// Command
+		
+		// Error Handling
+		
+		// Branch Conditions
+		IF Links.Upstream.ArrivalDetection THEN
+			Controls.State := E_IndexedPositionStates.Starved;
+			Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		END_IF
+		
+	E_IndexedPositionStates.Bypass:
+		Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		
+	E_IndexedPositionStates.Fault:
+		// Command
+		Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+		
+		// Error Handling
+		
+		// Branch Conditions
+	
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_Controls" Id="{b310475e-32bc-40cf-a46b-4cc5dc485c1e}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Controls : REFERENCE TO ST_IndexedPositionControls]]></Declaration>
+      <Get Name="Get" Id="{c32935fb-0864-43ce-9559-b349cd738359}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Controls REF= Controls;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Links" Id="{9c6e14f0-9efa-4a56-b650-b0b8105c5a3a}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Links : REFERENCE TO ST_IndexedPositionLinks]]></Declaration>
+      <Get Name="Get" Id="{908fadfb-bdbe-4eb2-90c4-0ea32058fac0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Links REF= Links;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_IndexedPosition">
+      <LineId Id="39" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_IndexedPosition._M_StateMachine">
+      <LineId Id="221" Count="37" />
+      <LineId Id="438" Count="0" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="434" Count="3" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="440" Count="2" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="443" Count="0" />
+      <LineId Id="263" Count="4" />
+      <LineId Id="444" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="445" Count="3" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="449" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="450" Count="2" />
+      <LineId Id="271" Count="5" />
+      <LineId Id="453" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="454" Count="3" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="458" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="459" Count="2" />
+      <LineId Id="280" Count="6" />
+      <LineId Id="462" Count="3" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="466" Count="0" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="467" Count="2" />
+      <LineId Id="289" Count="144" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_IndexedPosition.P_Controls.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_IndexedPosition.P_Links.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

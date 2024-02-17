@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Conveyor" Id="{795138f7-32e1-4f4d-be5d-521d4edc8b59}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC FB_Conveyor
+
+VAR_IN_OUT
+	HardwareInputArray : ARRAY [*] OF BOOL;		// For Actuators
+END_VAR
+
+VAR
+	Configuration 	: ST_ConveyorConfiguration;
+	Controls		: ST_ConveyorControls;
+	Status			: ST_ConveyorStatus;
+	
+	InitDone 		: BOOL := FALSE;
+	
+	State			: DINT := E_ConveyorStates.Stopped;
+	Running			: BOOL := FALSE; // Controls conveyor running, Initialized false to ensure conveyors are off on startup
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT InitDone THEN
+	M_Init();
+	InitDone:= TRUE;
+ELSE
+	M_Cyclic();
+	M_StateMachine();
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="M_Cyclic" Id="{9c7b7699-b261-439a-af2c-8ff428580a73}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Cyclic : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Configuration.OutputArrayPosition := Configuration.HardwareOutput - 32768;
+HardwareInputArray[Configuration.OutputArrayPosition] := Running;
+Status.isRunning := Running;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Init" Id="{f38c6018-898d-4472-8b72-b1c3b7ede863}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Init : BOOL
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Reset" Id="{0f31457f-3c8a-4ef8-a73a-775dcd954453}">
+      <Declaration><![CDATA[METHOD PUBLIC M_Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_StateMachine" Id="{f557a3e8-a4dc-4150-bcb7-ea5da06edf1f}">
+      <Declaration><![CDATA[METHOD PRIVATE M_StateMachine : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE State OF
+	E_ConveyorStates.Stopped: 
+		IF Controls.RequestRun THEN
+			State := E_ConveyorStates.RunRequest;
+			Controls.RequestRun := FALSE;
+		END_IF
+		
+	E_ConveyorStates.RunRequest:
+		Running := TRUE;
+		State := E_ConveyorStates.Running;
+		
+	E_ConveyorStates.Running:
+		IF Controls.RequestStop THEN
+			State := E_ConveyorStates.StopRequest;
+			Controls.RequestStop := FALSE;
+		END_IF
+		
+	E_ConveyorStates.StopRequest:
+		Running := FALSE;
+		State := E_ConveyorStates.Stopped;
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_Configuration" Id="{cdfbb0d5-3782-4885-803d-95c81bda4d95}">
+      <Declaration><![CDATA[PROPERTY P_Configuration : REFERENCE TO ST_ConveyorConfiguration]]></Declaration>
+      <Get Name="Get" Id="{9a053f5a-5c04-4402-a515-60b8aa436ba6}">
+        <Declaration><![CDATA[PUBLIC 
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Configuration REF= Configuration;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Controls" Id="{16d97001-52f1-42da-9f4c-7af3f68852d8}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Controls : REFERENCE TO ST_ConveyorControls]]></Declaration>
+      <Get Name="Get" Id="{496a1c07-8e8e-40b2-bdae-0f4961766996}">
+        <Declaration><![CDATA[PUBLIC 
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Controls REF= Controls;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Status" Id="{4a132a40-2714-4c36-8475-81001e1683b1}">
+      <Declaration><![CDATA[PROPERTY P_Status : REFERENCE TO ST_ConveyorStatus]]></Declaration>
+      <Get Name="Get" Id="{376e1ab0-4ce3-411e-818b-82c500ce5092}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Status REF= Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_Conveyor">
+      <LineId Id="9" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Conveyor.M_Cyclic">
+      <LineId Id="9" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="10" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Conveyor.M_Init">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Conveyor.M_Reset">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Conveyor.M_StateMachine">
+      <LineId Id="6" Count="3" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="10" Count="8" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="20" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Conveyor.P_Configuration.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Conveyor.P_Controls.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Conveyor.P_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

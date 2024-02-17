@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_LTUStatus" Id="{61cb5ac2-3ff8-47f2-bfaf-f20fa542ad2a}">
+    <Declaration><![CDATA[TYPE ST_LTUStatus :
+STRUCT
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

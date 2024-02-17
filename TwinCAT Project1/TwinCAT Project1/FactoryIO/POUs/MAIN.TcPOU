@@ -1,0 +1,669 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{1ba8ffa5-d810-4a75-8435-ec1b3fcadc6a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	// Actuators
+	Conveyors		: ARRAY [0..16] OF FB_Conveyor;
+	LTUs			: ARRAY [1..6] OF FB_LTU;
+	PalletStops		: ARRAY [0..32] OF FB_PalletStop;
+	
+	// Sensors
+	PalletStop_PartPresence_DetectArrival 	: ARRAY [0..32] OF FB_PartPresence;
+	PalletStop_PartPresence_AreaMonitor		: ARRAY [0..32] OF FB_PartPresence;
+	LTU_PartPresence_DetectArrival 			: ARRAY [1..6] OF FB_PartPresence;
+	LTU_PartPresence_AreaMonitor			: ARRAY [1..6] OF FB_PartPresence;
+	
+	FirstScan		: BOOL := TRUE;
+	i				: DINT;
+	ToggleOn		: BOOL := FALSE;
+	ToggleOff		: BOOL := FALSE;
+	arrayOffset		: DINT := 32768;
+	
+	A : BOOL := FALSE;
+END_VAR
+
+// Fill in Reset Methods
+// Set up main method for Material Flow
+// Set up Error Handling
+// Setup Manual Controls
+// Create TwinCAT HMI for Manual Controls
+// Download free ignition and create scada page
+// Add Logic for sensor decisions
+// Add an Actuator to do something?
+// Save in GIT repo
+// Maybe Add Safety and Stack Lights, Safety as real virtual safety
+// Difference between HMI anbd SCADA
+// Maybe Add Some Ladder?
+// Scada part request]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[M_PartPresenceSensors();
+M_Conveyors();
+M_PalletStops();
+M_LTUs();
+M_ConveyanceLogic();
+
+// Conveyors
+FOR i := 0 TO 16 BY 1 DO
+	IF ToggleOn THEN
+		Conveyors[i].P_Controls.RequestRun := TRUE;
+	ELSIF ToggleOff THEN
+		Conveyors[i].P_Controls.RequestStop := TRUE;
+	END_IF
+END_FOR
+ToggleOn := FALSE;
+ToggleOff := FALSE;
+
+FirstScan := FALSE;
+]]></ST>
+    </Implementation>
+    <Method Name="M_ConveyanceLogic" Id="{8f0715ba-1408-4dbe-91b5-9a56e511bcf6}">
+      <Declaration><![CDATA[METHOD PUBLIC M_ConveyanceLogic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////// Pallet Stop Linking ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Pallet Stop 00
+PalletStops[0].P_Links.Upstream 			REF= PalletStops[31].P_Controls;
+PalletStops[0].P_Links.DownstreamForward 	REF= PalletStops[1].P_Controls;
+
+// Pallet Stop 01
+PalletStops[1].P_Links.Upstream 			REF= PalletStops[0].P_Controls;
+PalletStops[1].P_Links.DownstreamForward 	REF= LTUs[1].P_Controls;
+
+// Pallet Stop 02
+// Skipped
+
+// Pallet Stop 03
+PalletStops[3].P_Links.Upstream 			REF= LTUs[1].P_Controls;
+PalletStops[3].P_Links.DownstreamForward 	REF= PalletStops[4].P_Controls;
+
+// Pallet Stop 04
+PalletStops[4].P_Links.Upstream 			REF= PalletStops[3].P_Controls;
+PalletStops[4].P_Links.DownstreamForward 	REF= PalletStops[5].P_Controls;
+
+// Pallet Stop 05
+PalletStops[5].P_Links.Upstream 			REF= PalletStops[4].P_Controls;
+PalletStops[5].P_Links.DownstreamForward 	REF= PalletStops[7].P_Controls;
+
+// Pallet Stop 06
+PalletStops[6].P_Links.Upstream 			REF= LTUs[1].P_Controls;
+PalletStops[6].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
+
+// Pallet Stop 07
+PalletStops[7].P_Links.Upstream 			REF= PalletStops[5].P_Controls;
+PalletStops[7].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
+
+// Pallet Stop 08
+// Skipped
+
+// Pallet Stop 09
+// Skipped
+
+// Pallet Stop 10
+PalletStops[10].P_Links.Upstream 			REF= LTUs[2].P_Controls;
+PalletStops[10].P_Links.DownstreamForward 	REF= LTUs[3].P_Controls;;
+
+// Pallet Stop 11
+// Skipped
+
+// Pallet Stop 12
+PalletStops[12].P_Links.Upstream 			REF= LTUs[3].P_Controls;
+PalletStops[12].P_Links.DownstreamForward 	REF= LTUs[4].P_Controls;;
+
+// Pallet Stop 13
+// Skipped
+
+// Pallet Stop 14
+PalletStops[14].P_Links.Upstream 			REF= LTUs[4].P_Controls;
+PalletStops[14].P_Links.DownstreamForward 	REF= PalletStops[15].P_Controls;
+
+// Pallet Stop 15
+PalletStops[15].P_Links.Upstream 			REF= PalletStops[14].P_Controls;
+PalletStops[15].P_Links.DownstreamForward 	REF= PalletStops[16].P_Controls;
+
+// Pallet Stop 16
+PalletStops[16].P_Links.Upstream 			REF= PalletStops[15].P_Controls;
+PalletStops[16].P_Links.DownstreamForward 	REF= PalletStops[17].P_Controls;
+
+// Pallet Stop 17
+PalletStops[17].P_Links.Upstream 			REF= PalletStops[16].P_Controls;
+PalletStops[17].P_Links.DownstreamForward 	REF= PalletStops[32].P_Controls; // 18b
+
+// Pallet Stop 18
+PalletStops[18].P_Links.Upstream 			REF= LTUs[3].P_Controls;
+PalletStops[18].P_Links.DownstreamForward 	REF= LTUs[5].P_Controls;;
+
+// Pallet Stop 19
+PalletStops[19].P_Links.Upstream 			REF= PalletStops[32].P_Controls; // 18b
+PalletStops[19].P_Links.DownstreamForward 	REF= LTUs[6].P_Controls;
+
+// Pallet Stop 20
+// Skipped
+
+// Pallet Stop 21
+PalletStops[21].P_Links.Upstream 			REF= LTUs[6].P_Controls;
+PalletStops[21].P_Links.DownstreamForward 	REF= PalletStops[22].P_Controls;
+
+IF PalletStops[21].P_Controls.ArrivalDetection THEN
+	PalletStops[21].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[21].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 22
+PalletStops[22].P_Links.Upstream 			REF= PalletStops[21].P_Controls;
+PalletStops[22].P_Links.DownstreamForward 	REF= PalletStops[23].P_Controls;
+
+IF PalletStops[22].P_Controls.ArrivalDetection THEN
+	PalletStops[22].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[22].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 23
+PalletStops[23].P_Links.Upstream 			REF= PalletStops[22].P_Controls;
+PalletStops[23].P_Links.DownstreamForward 	REF= PalletStops[24].P_Controls;
+
+IF PalletStops[23].P_Controls.ArrivalDetection THEN
+	PalletStops[23].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[23].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 24
+PalletStops[24].P_Links.Upstream 			REF= PalletStops[23].P_Controls;
+PalletStops[24].P_Links.DownstreamForward 	REF= PalletStops[25].P_Controls;
+
+IF PalletStops[24].P_Controls.ArrivalDetection THEN
+	PalletStops[24].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[24].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 25
+PalletStops[25].P_Links.Upstream 			REF= PalletStops[24].P_Controls;
+PalletStops[25].P_Links.DownstreamForward 	REF= PalletStops[26].P_Controls;
+
+IF PalletStops[25].P_Controls.ArrivalDetection THEN
+	PalletStops[25].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[25].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 26
+PalletStops[26].P_Links.Upstream 			REF= PalletStops[25].P_Controls;
+PalletStops[26].P_Links.DownstreamForward 	REF= PalletStops[27].P_Controls;
+
+IF PalletStops[26].P_Controls.ArrivalDetection THEN
+	PalletStops[26].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[26].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 27
+PalletStops[27].P_Links.Upstream 			REF= PalletStops[26].P_Controls;
+PalletStops[27].P_Links.DownstreamForward 	REF= PalletStops[28].P_Controls;
+
+IF PalletStops[27].P_Controls.ArrivalDetection THEN
+	PalletStops[27].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[27].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 28
+PalletStops[28].P_Links.Upstream 			REF= PalletStops[27].P_Controls;
+PalletStops[28].P_Links.DownstreamForward 	REF= PalletStops[29].P_Controls;
+
+IF PalletStops[28].P_Controls.ArrivalDetection THEN
+	PalletStops[28].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[28].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 29
+PalletStops[29].P_Links.Upstream 			REF= PalletStops[28].P_Controls;
+PalletStops[29].P_Links.DownstreamForward 	REF= PalletStops[30].P_Controls;
+
+IF PalletStops[29].P_Controls.ArrivalDetection THEN
+	PalletStops[29].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[29].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 30
+PalletStops[30].P_Links.Upstream 			REF= PalletStops[29].P_Controls;
+PalletStops[30].P_Links.DownstreamForward 	REF= PalletStops[31].P_Controls;
+
+IF PalletStops[30].P_Controls.ArrivalDetection THEN
+	PalletStops[30].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[30].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 31
+PalletStops[31].P_Links.Upstream 			REF= PalletStops[30].P_Controls;
+PalletStops[31].P_Links.DownstreamForward 	REF= PalletStops[0].P_Controls;
+
+IF PalletStops[31].P_Controls.ArrivalDetection THEN
+	PalletStops[31].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
+	PalletStops[31].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+END_IF
+
+// Pallet Stop 18b
+PalletStops[32].P_Links.Upstream 			REF= PalletStops[17].P_Controls;
+PalletStops[32].P_Links.DownstreamForward 	REF= PalletStops[19].P_Controls;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Conveyors" Id="{ec97a0d1-0883-4d52-bbe8-504248e12581}">
+      <Declaration><![CDATA[METHOD PUBLIC M_Conveyors : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FirstScan THEN
+	// Initialize
+	FOR i := 0 TO 16 BY 1 DO
+		Conveyors[i].P_Configuration.Name := CONCAT('Conveyor ', DINT_TO_STRING(i));
+		Conveyors[i].P_Configuration.HardwareOutput := 32771 + i;
+	END_FOR
+ELSE
+	FOR i := 0 TO 16 BY 1 DO
+		Conveyors[i](HardwareInputArray := GVL.mb_Input_Coils);
+	END_FOR
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_LTUs" Id="{889b268d-89cb-4e6c-9c21-9168d96bbac3}">
+      <Declaration><![CDATA[METHOD PUBLIC M_LTUs : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FirstScan THEN
+	// Initialize
+	FOR i := 1 TO 6 BY 1 DO
+		LTUs[i].P_Configuration.Name := CONCAT('LTU ', DINT_TO_STRING(i));
+		LTUs[i].P_Configuration.ForwardHardwareOutput 	:= 32790 + 1 + ((i-1)*4);
+		LTUs[i].P_Configuration.ReverseHardwareOutput 	:= 32790 + 2 + ((i-1)*4);
+		LTUs[i].P_Configuration.LeftHardwareOutput 		:= 32790 + 3 + ((i-1)*4);
+		LTUs[i].P_Configuration.RightHardwareOutput 	:= 32790 + 4 + ((i-1)*4);
+	END_FOR
+ELSE
+	// Update Area Monitoring and Arrival Detection
+	FOR i := 1 TO 6 BY 1 DO
+		LTUs[i].P_Controls.AreaMonitoring 		:= LTU_PartPresence_AreaMonitor[i].P_Status.isOn;
+		LTUs[i].P_Controls.ArrivalDetection 	:= LTU_PartPresence_DetectArrival[i].P_Status.isOn;
+		LTUs[i](HardwareInputArray := GVL.mb_Input_Coils);
+	END_FOR
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_PalletStops" Id="{541d8f45-320b-4721-9624-3148cccaca68}">
+      <Declaration><![CDATA[METHOD M_PalletStops : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FirstScan THEN
+	// Initialize
+	FOR i := 0 TO 32 BY 1 DO
+		PalletStops[i].P_Configuration.Name := CONCAT('Pallet Stop ', DINT_TO_STRING(i));
+		PalletStops[i].P_Configuration.DownStreamHardwareOutput := 32818 + i;
+	END_FOR
+ELSE
+	// Update Area Monitoring and Arrival Detection
+	FOR i := 0 TO 32 BY 1 DO
+		PalletStops[i].P_Controls.AreaMonitoring 	:= PalletStop_PartPresence_AreaMonitor[i].P_Status.isOn;
+		PalletStops[i].P_Controls.ArrivalDetection 	:= PalletStop_PartPresence_DetectArrival[i].P_Status.isOn;
+		PalletStops[i](HardwareInputArray := GVL.mb_Input_Coils);
+	END_FOR
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_PartPresenceSensors" Id="{e67342a4-c89a-42e2-a3b6-a75c93a51262}">
+      <Declaration><![CDATA[METHOD PUBLIC M_PartPresenceSensors : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[PalletStop_PartPresence_DetectArrival[0].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32771 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[1].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32772 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[2].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32773 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[3].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32774 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[4].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32775 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[5].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32776 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[6].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32777 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[7].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32778 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[8].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32779 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[9].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32780 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[10].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32781 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[11].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32782 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[12].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32783 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[13].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32784 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[14].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32785 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[15].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32786 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[16].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32787 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[17].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32788 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[18].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32789 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[19].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32790 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[20].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32791 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[21].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32792 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[22].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32793 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[23].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32794 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[24].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32795 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[25].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32796 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[26].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32797 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[27].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32798 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[28].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32799 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[29].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32800 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[30].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32801 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[31].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32802 - arrayOffset];
+PalletStop_PartPresence_DetectArrival[32].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32803 - arrayOffset];
+
+PalletStop_PartPresence_AreaMonitor[0].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32807 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[1].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32808 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[2].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32809 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[3].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32810 - arrayOffset] OR GVL.mb_Output_Coils[32811 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[4].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32812 - arrayOffset] OR GVL.mb_Output_Coils[32813 - arrayOffset] OR GVL.mb_Output_Coils[32814 - arrayOffset] OR GVL.mb_Output_Coils[32815 - arrayOffset] OR GVL.mb_Output_Coils[32816 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[5].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32817 - arrayOffset] OR GVL.mb_Output_Coils[32818 - arrayOffset] OR GVL.mb_Output_Coils[32819 - arrayOffset] OR GVL.mb_Output_Coils[32820 - arrayOffset] OR GVL.mb_Output_Coils[32821 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[6].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32822 - arrayOffset] OR GVL.mb_Output_Coils[32823 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[7].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32824 - arrayOffset] OR GVL.mb_Output_Coils[32825 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[8].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32826 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[9].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32827 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[10].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32828 - arrayOffset] OR GVL.mb_Output_Coils[32829 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[11].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32830 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[12].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32831 - arrayOffset] OR GVL.mb_Output_Coils[32832 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[13].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32833 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[14].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32834 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[15].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32835 - arrayOffset] OR GVL.mb_Output_Coils[32836 - arrayOffset] OR GVL.mb_Output_Coils[32837 - arrayOffset] OR GVL.mb_Output_Coils[32838 - arrayOffset] OR GVL.mb_Output_Coils[32839 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[16].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32840 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[17].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32841 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[18].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32842 - arrayOffset] OR GVL.mb_Output_Coils[32843 - arrayOffset] OR GVL.mb_Output_Coils[32844 - arrayOffset] OR GVL.mb_Output_Coils[32845 - arrayOffset] OR GVL.mb_Output_Coils[32846 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[19].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32847 - arrayOffset] OR GVL.mb_Output_Coils[32848 - arrayOffset] OR GVL.mb_Output_Coils[32849 - arrayOffset] OR GVL.mb_Output_Coils[32850 - arrayOffset] OR GVL.mb_Output_Coils[32851 - arrayOffset] OR GVL.mb_Output_Coils[32852 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[20].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32853 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[21].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32854 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[22].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32855 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[23].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32856 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[24].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32857 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[25].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32858 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[26].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32859 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[27].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32860 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[28].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32861 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[29].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32862 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[30].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32863 - arrayOffset] OR GVL.mb_Output_Coils[32864 - arrayOffset] OR GVL.mb_Output_Coils[32865 - arrayOffset] OR GVL.mb_Output_Coils[32866 - arrayOffset] OR GVL.mb_Output_Coils[32867 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[31].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32868 - arrayOffset] OR GVL.mb_Output_Coils[32869 - arrayOffset] OR GVL.mb_Output_Coils[32870 - arrayOffset] OR GVL.mb_Output_Coils[32871 - arrayOffset] OR GVL.mb_Output_Coils[32872 - arrayOffset];
+PalletStop_PartPresence_AreaMonitor[32].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32873 - arrayOffset];
+
+LTU_PartPresence_DetectArrival[1].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32877 - arrayOffset];
+LTU_PartPresence_DetectArrival[2].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32878 - arrayOffset];
+LTU_PartPresence_DetectArrival[3].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32879 - arrayOffset];
+LTU_PartPresence_DetectArrival[4].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32880 - arrayOffset];
+LTU_PartPresence_DetectArrival[5].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32881 - arrayOffset];
+LTU_PartPresence_DetectArrival[6].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32882 - arrayOffset];
+
+LTU_PartPresence_AreaMonitor[1].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32886 - arrayOffset];
+LTU_PartPresence_AreaMonitor[2].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32887 - arrayOffset];
+LTU_PartPresence_AreaMonitor[3].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32888 - arrayOffset];
+LTU_PartPresence_AreaMonitor[4].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32889 - arrayOffset];
+LTU_PartPresence_AreaMonitor[5].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32890 - arrayOffset];
+LTU_PartPresence_AreaMonitor[6].P_Configuration.HardwareInput := GVL.mb_Output_Coils[32891 - arrayOffset];
+
+FOR i := 0 TO 32 BY 1 DO
+	PalletStop_PartPresence_DetectArrival[i]();
+	PalletStop_PartPresence_AreaMonitor[i]();
+END_FOR
+
+FOR i := 1 TO 6 BY 1 DO
+	LTU_PartPresence_DetectArrival[i]();
+	LTU_PartPresence_AreaMonitor[i]();
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="MAIN">
+      <LineId Id="115" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="118" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.M_ConveyanceLogic">
+      <LineId Id="144" Count="0" />
+      <LineId Id="142" Count="1" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="27" Count="2" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="150" Count="1" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="154" Count="2" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="158" Count="2" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="161" Count="2" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="165" Count="2" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="171" Count="1" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="204" Count="1" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="200" Count="2" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="174" Count="1" />
+      <LineId Id="207" Count="1" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="209" Count="1" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="212" Count="2" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="215" Count="1" />
+      <LineId Id="179" Count="1" />
+      <LineId Id="217" Count="1" />
+      <LineId Id="181" Count="1" />
+      <LineId Id="219" Count="1" />
+      <LineId Id="183" Count="1" />
+      <LineId Id="221" Count="1" />
+      <LineId Id="185" Count="1" />
+      <LineId Id="223" Count="1" />
+      <LineId Id="187" Count="1" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="189" Count="1" />
+      <LineId Id="276" Count="1" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="309" Count="0" />
+      <LineId Id="308" Count="0" />
+      <LineId Id="310" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="311" Count="0" />
+      <LineId Id="279" Count="2" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="312" Count="0" />
+      <LineId Id="314" Count="1" />
+      <LineId Id="361" Count="0" />
+      <LineId Id="313" Count="0" />
+      <LineId Id="283" Count="2" />
+      <LineId Id="282" Count="0" />
+      <LineId Id="316" Count="0" />
+      <LineId Id="318" Count="1" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="287" Count="2" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="320" Count="0" />
+      <LineId Id="322" Count="1" />
+      <LineId Id="352" Count="0" />
+      <LineId Id="321" Count="0" />
+      <LineId Id="291" Count="2" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="324" Count="0" />
+      <LineId Id="326" Count="1" />
+      <LineId Id="353" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="226" Count="0" />
+      <LineId Id="294" Count="1" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="330" Count="1" />
+      <LineId Id="354" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="296" Count="1" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="334" Count="1" />
+      <LineId Id="355" Count="0" />
+      <LineId Id="333" Count="0" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="298" Count="1" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="338" Count="1" />
+      <LineId Id="356" Count="0" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="300" Count="1" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="340" Count="0" />
+      <LineId Id="342" Count="1" />
+      <LineId Id="357" Count="0" />
+      <LineId Id="341" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="302" Count="1" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="344" Count="0" />
+      <LineId Id="346" Count="1" />
+      <LineId Id="358" Count="0" />
+      <LineId Id="345" Count="0" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="304" Count="1" />
+      <LineId Id="237" Count="0" />
+      <LineId Id="348" Count="0" />
+      <LineId Id="350" Count="1" />
+      <LineId Id="359" Count="0" />
+      <LineId Id="349" Count="0" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="306" Count="1" />
+      <LineId Id="239" Count="36" />
+      <LineId Id="192" Count="5" />
+      <LineId Id="173" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.M_Conveyors">
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="3" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.M_LTUs">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="6" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="17" Count="2" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.M_PalletStops">
+      <LineId Id="5" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.M_PartPresenceSensors">
+      <LineId Id="5" Count="0" />
+      <LineId Id="37" Count="4" />
+      <LineId Id="43" Count="4" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="49" Count="4" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="55" Count="4" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="61" Count="4" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="32" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="110" Count="4" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="116" Count="5" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="124" Count="8" />
+      <LineId Id="123" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

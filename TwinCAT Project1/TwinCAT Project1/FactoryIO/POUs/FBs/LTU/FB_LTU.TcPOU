@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_LTU" Id="{9a3a695d-874f-4a99-a04d-54c171fe4ae2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC FB_LTU EXTENDS FB_IndexedPosition
+
+VAR_IN_OUT
+	HardwareInputArray : ARRAY [*] OF BOOL;		// For Actuators
+END_VAR
+
+VAR
+	Configuration 		: ST_LTUConfiguration;
+	Status				: ST_LTUStatus;
+	
+	InitDone 			: BOOL := FALSE;
+
+	LTUHardwareState	: DINT := E_LTUHardwareState.NoCommand;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT InitDone THEN
+	M_Init();
+	InitDone:= TRUE;
+ELSE
+	SUPER^();
+	M_Cyclic();
+	M_StateMachine();
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="M_Cyclic" Id="{2c03fa0c-75a0-4d97-94fc-1f4e2d386c87}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Cyclic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Controls.isDefined := TRUE; // I exist
+
+Configuration.ForwardOutputArrayPosition 	:= Configuration.ForwardHardwareOutput - 32768;
+Configuration.ReverseOutputArrayPosition 	:= Configuration.ReverseHardwareOutput - 32768;
+Configuration.LeftOutputArrayPosition 		:= Configuration.LeftHardwareOutput - 32768;
+Configuration.RightOutputArrayPosition 		:= Configuration.RightHardwareOutput - 32768;
+
+HardwareInputArray[Configuration.ForwardOutputArrayPosition] 	:= SEL( LTUHardwareState = E_LTUHardwareState.RunForward, FALSE, TRUE);
+HardwareInputArray[Configuration.ReverseOutputArrayPosition] 	:= SEL( LTUHardwareState = E_LTUHardwareState.RunReverse, FALSE, TRUE);
+HardwareInputArray[Configuration.LeftOutputArrayPosition] 		:= SEL( LTUHardwareState = E_LTUHardwareState.RunLeft, FALSE, TRUE);
+HardwareInputArray[Configuration.RightOutputArrayPosition] 		:= SEL( LTUHardwareState = E_LTUHardwareState.RunRight, FALSE, TRUE);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Init" Id="{89a5733f-5226-45aa-aad7-e130af7257fa}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Reset" Id="{cf69b0fe-4f1e-40da-87ff-22d8542cf7e7}">
+      <Declaration><![CDATA[METHOD PUBLIC M_Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_StateMachine" Id="{401b7a95-1b5d-4eb7-8b1c-33ec096717ce}">
+      <Declaration><![CDATA[METHOD PRIVATE M_StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(*IF Configuration.BypassLTU THEN
+	State := E_LTUStates.Bypass;
+ELSE
+	State := E_LTUStates.Idle;
+END_IF*)
+
+CASE SUPER^.Controls.State OF
+	E_IndexedPositionStates.Starved, 
+	E_IndexedPositionStates.Idle, 
+	E_IndexedPositionStates.Blocked, 
+	E_IndexedPositionStates.Fault:
+		LTUHardwareState := E_LTUHardwareState.NoCommand;
+			
+	E_IndexedPositionStates.ReceivingLeft, 
+	E_IndexedPositionStates.SendingLeft:
+		LTUHardwareState := E_LTUHardwareState.RunLeft;
+
+	E_IndexedPositionStates.ReceivingRight, 
+	E_IndexedPositionStates.SendingRight:
+		LTUHardwareState := E_LTUHardwareState.RunRight;
+
+	E_IndexedPositionStates.ReceivingForward, 
+	E_IndexedPositionStates.SendingForward:
+		LTUHardwareState := E_LTUHardwareState.RunForward;
+		
+	E_IndexedPositionStates.ReceivingReverse, 
+	E_IndexedPositionStates.SendingReverse:
+		LTUHardwareState := E_LTUHardwareState.RunReverse;
+		
+	E_IndexedPositionStates.Bypass:
+		LTUHardwareState := E_LTUHardwareState.RunForward;
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_Configuration" Id="{0f8ff860-f9b3-4c36-a003-5520c8fde47e}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Configuration : REFERENCE TO ST_LTUConfiguration]]></Declaration>
+      <Get Name="Get" Id="{60d5b67b-3c9d-49a5-8918-917adf8a6aae}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Configuration REF= Configuration;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Status" Id="{8e24c6f7-a6a0-4bc6-a85a-a81f7d3f5058}">
+      <Declaration><![CDATA[PROPERTY PUBLIC P_Status : REFERENCE TO ST_LTUStatus]]></Declaration>
+      <Get Name="Get" Id="{f8bc7630-fd81-44b1-ae66-983ebbb9446b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Status REF= Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_LTU">
+      <LineId Id="45" Count="6" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LTU.M_Cyclic">
+      <LineId Id="14" Count="1" />
+      <LineId Id="5" Count="3" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_LTU.M_Init">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LTU.M_Reset">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LTU.M_StateMachine">
+      <LineId Id="272" Count="1" />
+      <LineId Id="276" Count="1" />
+      <LineId Id="274" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="279" Count="2" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="282" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="283" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="269" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LTU.P_Configuration.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LTU.P_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_ActivationType" Id="{67bb857b-530f-4884-ac5d-b5b3fbb1d728}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ActivationType :
+(
+	NormallyOpen,
+	NormallyClosed
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

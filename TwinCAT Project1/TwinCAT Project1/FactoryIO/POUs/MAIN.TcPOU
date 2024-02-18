@@ -20,18 +20,27 @@ VAR
 	ToggleOff		: BOOL := FALSE;
 	arrayOffset		: DINT := 32768;
 	
-	A : BOOL := FALSE;
+	// Simulation Controls
+	PauseSimOut		: BOOL := FALSE;
+	ResetSimOut		: BOOL := FALSE;
+	RunSimOut		: BOOL := FALSE;
+	PauseSimIn		: BOOL := FALSE;
+	ResetSimIn		: BOOL := FALSE;
+	RunSimIn		: BOOL := FALSE;
+	
+	// Global Reset
+	BigReset		: BOOL := FALSE;
 END_VAR
 
-// Fill in Reset Methods
-// Set up main method for Material Flow
+
+
 // Set up Error Handling
 // Setup Manual Controls
 // Create TwinCAT HMI for Manual Controls
 // Download free ignition and create scada page
 // Add Logic for sensor decisions
 // Add an Actuator to do something?
-// Save in GIT repo
+
 // Maybe Add Safety and Stack Lights, Safety as real virtual safety
 // Difference between HMI anbd SCADA
 // Maybe Add Some Ladder?
@@ -42,6 +51,28 @@ M_Conveyors();
 M_PalletStops();
 M_LTUs();
 M_ConveyanceLogic();
+
+IF BigReset THEN
+	BigReset := FALSE;
+END_IF
+
+IF ResetSimIn THEN
+	BigReset := TRUE;
+END_IF
+
+
+FirstScan := FALSE;
+]]></ST>
+    </Implementation>
+    <Method Name="M_ConveyanceLogic" Id="{8f0715ba-1408-4dbe-91b5-9a56e511bcf6}">
+      <Declaration><![CDATA[METHOD PUBLIC M_ConveyanceLogic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////// Conveyor Motion /////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Conveyors
 FOR i := 0 TO 16 BY 1 DO
@@ -54,49 +85,42 @@ END_FOR
 ToggleOn := FALSE;
 ToggleOff := FALSE;
 
-FirstScan := FALSE;
-]]></ST>
-    </Implementation>
-    <Method Name="M_ConveyanceLogic" Id="{8f0715ba-1408-4dbe-91b5-9a56e511bcf6}">
-      <Declaration><![CDATA[METHOD PUBLIC M_ConveyanceLogic : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////// Pallet Stop Linking ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Pallet Stop 00
-PalletStops[0].P_Links.Upstream 			REF= PalletStops[31].P_Controls;
-PalletStops[0].P_Links.DownstreamForward 	REF= PalletStops[1].P_Controls;
+PalletStops[0].P_Links.Rear 	REF= PalletStops[31].P_Controls.Front;
+PalletStops[0].P_Links.Front	REF= PalletStops[1].P_Controls.Rear;
 
 // Pallet Stop 01
-PalletStops[1].P_Links.Upstream 			REF= PalletStops[0].P_Controls;
-PalletStops[1].P_Links.DownstreamForward 	REF= LTUs[1].P_Controls;
+PalletStops[1].P_Links.Rear		REF= PalletStops[0].P_Controls.Front;
+PalletStops[1].P_Links.Front 	REF= LTUs[1].P_Controls.Rear;
 
 // Pallet Stop 02
 // Skipped
 
 // Pallet Stop 03
-PalletStops[3].P_Links.Upstream 			REF= LTUs[1].P_Controls;
-PalletStops[3].P_Links.DownstreamForward 	REF= PalletStops[4].P_Controls;
+PalletStops[3].P_Links.Rear		REF= LTUs[1].P_Controls.Left;
+PalletStops[3].P_Links.Front 	REF= PalletStops[4].P_Controls.Rear;
 
 // Pallet Stop 04
-PalletStops[4].P_Links.Upstream 			REF= PalletStops[3].P_Controls;
-PalletStops[4].P_Links.DownstreamForward 	REF= PalletStops[5].P_Controls;
+PalletStops[4].P_Links.Rear		REF= PalletStops[3].P_Controls.Front;
+PalletStops[4].P_Links.Front 	REF= PalletStops[5].P_Controls.Rear;
 
 // Pallet Stop 05
-PalletStops[5].P_Links.Upstream 			REF= PalletStops[4].P_Controls;
-PalletStops[5].P_Links.DownstreamForward 	REF= PalletStops[7].P_Controls;
+PalletStops[5].P_Links.Rear		REF= PalletStops[4].P_Controls.Front;
+PalletStops[5].P_Links.Front 	REF= PalletStops[7].P_Controls.Rear;
 
 // Pallet Stop 06
-PalletStops[6].P_Links.Upstream 			REF= LTUs[1].P_Controls;
-PalletStops[6].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
+PalletStops[6].P_Links.Rear		REF= LTUs[1].P_Controls.Front;
+PalletStops[6].P_Links.Front 	REF= LTUs[2].P_Controls.Right;
 
 // Pallet Stop 07
-PalletStops[7].P_Links.Upstream 			REF= PalletStops[5].P_Controls;
-PalletStops[7].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
+PalletStops[7].P_Links.Rear		REF= PalletStops[5].P_Controls.Front;
+PalletStops[7].P_Links.Front 	REF= LTUs[2].P_Controls.Rear;
 
 // Pallet Stop 08
 // Skipped
@@ -105,167 +129,163 @@ PalletStops[7].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
 // Skipped
 
 // Pallet Stop 10
-PalletStops[10].P_Links.Upstream 			REF= LTUs[2].P_Controls;
-PalletStops[10].P_Links.DownstreamForward 	REF= LTUs[3].P_Controls;;
+PalletStops[10].P_Links.Rear	REF= LTUs[2].P_Controls.Left;
+PalletStops[10].P_Links.Front 	REF= LTUs[3].P_Controls.Rear;;
 
 // Pallet Stop 11
 // Skipped
 
 // Pallet Stop 12
-PalletStops[12].P_Links.Upstream 			REF= LTUs[3].P_Controls;
-PalletStops[12].P_Links.DownstreamForward 	REF= LTUs[4].P_Controls;;
+PalletStops[12].P_Links.Rear	REF= LTUs[3].P_Controls.Left;
+PalletStops[12].P_Links.Front 	REF= LTUs[4].P_Controls.Rear;;
 
 // Pallet Stop 13
 // Skipped
 
 // Pallet Stop 14
-PalletStops[14].P_Links.Upstream 			REF= LTUs[4].P_Controls;
-PalletStops[14].P_Links.DownstreamForward 	REF= PalletStops[15].P_Controls;
+PalletStops[14].P_Links.Rear	REF= LTUs[4].P_Controls.Right;
+PalletStops[14].P_Links.Front 	REF= PalletStops[15].P_Controls.Rear;
 
 // Pallet Stop 15
-PalletStops[15].P_Links.Upstream 			REF= PalletStops[14].P_Controls;
-PalletStops[15].P_Links.DownstreamForward 	REF= PalletStops[16].P_Controls;
+PalletStops[15].P_Links.Rear	REF= PalletStops[14].P_Controls.Front;
+PalletStops[15].P_Links.Front 	REF= PalletStops[16].P_Controls.Rear;
 
 // Pallet Stop 16
-PalletStops[16].P_Links.Upstream 			REF= PalletStops[15].P_Controls;
-PalletStops[16].P_Links.DownstreamForward 	REF= PalletStops[17].P_Controls;
+PalletStops[16].P_Links.Rear	REF= PalletStops[15].P_Controls.Front;
+PalletStops[16].P_Links.Front 	REF= PalletStops[17].P_Controls.Rear;
 
 // Pallet Stop 17
-PalletStops[17].P_Links.Upstream 			REF= PalletStops[16].P_Controls;
-PalletStops[17].P_Links.DownstreamForward 	REF= PalletStops[32].P_Controls; // 18b
+PalletStops[17].P_Links.Rear	REF= PalletStops[16].P_Controls.Front;
+PalletStops[17].P_Links.Front 	REF= PalletStops[32].P_Controls.Rear; // 18b
 
 // Pallet Stop 18
-PalletStops[18].P_Links.Upstream 			REF= LTUs[3].P_Controls;
-PalletStops[18].P_Links.DownstreamForward 	REF= LTUs[5].P_Controls;;
+PalletStops[18].P_Links.Rear	REF= LTUs[3].P_Controls.Front;
+PalletStops[18].P_Links.Front 	REF= LTUs[5].P_Controls.Rear;
 
 // Pallet Stop 19
-PalletStops[19].P_Links.Upstream 			REF= PalletStops[32].P_Controls; // 18b
-PalletStops[19].P_Links.DownstreamForward 	REF= LTUs[6].P_Controls;
+PalletStops[19].P_Links.Rear	REF= PalletStops[32].P_Controls.Front; // 18b
+PalletStops[19].P_Links.Front 	REF= LTUs[6].P_Controls.Left;
 
 // Pallet Stop 20
 // Skipped
 
 // Pallet Stop 21
-PalletStops[21].P_Links.Upstream 			REF= LTUs[6].P_Controls;
-PalletStops[21].P_Links.DownstreamForward 	REF= PalletStops[22].P_Controls;
-
-IF PalletStops[21].P_Controls.ArrivalDetection THEN
-	PalletStops[21].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[21].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[21].P_Links.Rear	REF= LTUs[6].P_Controls.Right;
+PalletStops[21].P_Links.Front 	REF= PalletStops[22].P_Controls.Rear;
 
 // Pallet Stop 22
-PalletStops[22].P_Links.Upstream 			REF= PalletStops[21].P_Controls;
-PalletStops[22].P_Links.DownstreamForward 	REF= PalletStops[23].P_Controls;
-
-IF PalletStops[22].P_Controls.ArrivalDetection THEN
-	PalletStops[22].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[22].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[22].P_Links.Rear	REF= PalletStops[21].P_Controls.Front;
+PalletStops[22].P_Links.Front 	REF= PalletStops[23].P_Controls.Rear;
 
 // Pallet Stop 23
-PalletStops[23].P_Links.Upstream 			REF= PalletStops[22].P_Controls;
-PalletStops[23].P_Links.DownstreamForward 	REF= PalletStops[24].P_Controls;
-
-IF PalletStops[23].P_Controls.ArrivalDetection THEN
-	PalletStops[23].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[23].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[23].P_Links.Rear	REF= PalletStops[22].P_Controls.Front;
+PalletStops[23].P_Links.Front 	REF= PalletStops[24].P_Controls.Rear;
 
 // Pallet Stop 24
-PalletStops[24].P_Links.Upstream 			REF= PalletStops[23].P_Controls;
-PalletStops[24].P_Links.DownstreamForward 	REF= PalletStops[25].P_Controls;
-
-IF PalletStops[24].P_Controls.ArrivalDetection THEN
-	PalletStops[24].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[24].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[24].P_Links.Rear	REF= PalletStops[23].P_Controls.Front;
+PalletStops[24].P_Links.Front 	REF= PalletStops[25].P_Controls.Rear;
 
 // Pallet Stop 25
-PalletStops[25].P_Links.Upstream 			REF= PalletStops[24].P_Controls;
-PalletStops[25].P_Links.DownstreamForward 	REF= PalletStops[26].P_Controls;
-
-IF PalletStops[25].P_Controls.ArrivalDetection THEN
-	PalletStops[25].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[25].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[25].P_Links.Rear	REF= PalletStops[24].P_Controls.Front;
+PalletStops[25].P_Links.Front 	REF= PalletStops[26].P_Controls.Rear;
 
 // Pallet Stop 26
-PalletStops[26].P_Links.Upstream 			REF= PalletStops[25].P_Controls;
-PalletStops[26].P_Links.DownstreamForward 	REF= PalletStops[27].P_Controls;
-
-IF PalletStops[26].P_Controls.ArrivalDetection THEN
-	PalletStops[26].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[26].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[26].P_Links.Rear	REF= PalletStops[25].P_Controls.Front;
+PalletStops[26].P_Links.Front 	REF= PalletStops[27].P_Controls.Rear;
 
 // Pallet Stop 27
-PalletStops[27].P_Links.Upstream 			REF= PalletStops[26].P_Controls;
-PalletStops[27].P_Links.DownstreamForward 	REF= PalletStops[28].P_Controls;
-
-IF PalletStops[27].P_Controls.ArrivalDetection THEN
-	PalletStops[27].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[27].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[27].P_Links.Rear	REF= PalletStops[26].P_Controls.Front;
+PalletStops[27].P_Links.Front 	REF= PalletStops[28].P_Controls.Rear;
 
 // Pallet Stop 28
-PalletStops[28].P_Links.Upstream 			REF= PalletStops[27].P_Controls;
-PalletStops[28].P_Links.DownstreamForward 	REF= PalletStops[29].P_Controls;
-
-IF PalletStops[28].P_Controls.ArrivalDetection THEN
-	PalletStops[28].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[28].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[28].P_Links.Rear	REF= PalletStops[27].P_Controls.Front;
+PalletStops[28].P_Links.Front 	REF= PalletStops[29].P_Controls.Rear;
 
 // Pallet Stop 29
-PalletStops[29].P_Links.Upstream 			REF= PalletStops[28].P_Controls;
-PalletStops[29].P_Links.DownstreamForward 	REF= PalletStops[30].P_Controls;
+PalletStops[29].P_Links.Rear	REF= PalletStops[28].P_Controls.Front;
+PalletStops[29].P_Links.Front 	REF= PalletStops[30].P_Controls.Rear;
 
-IF PalletStops[29].P_Controls.ArrivalDetection THEN
-	PalletStops[29].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[29].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
 
 // Pallet Stop 30
-PalletStops[30].P_Links.Upstream 			REF= PalletStops[29].P_Controls;
-PalletStops[30].P_Links.DownstreamForward 	REF= PalletStops[31].P_Controls;
-
-IF PalletStops[30].P_Controls.ArrivalDetection THEN
-	PalletStops[30].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[30].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[30].P_Links.Rear	REF= PalletStops[29].P_Controls.Front;
+PalletStops[30].P_Links.Front 	REF= PalletStops[31].P_Controls.Rear;
 
 // Pallet Stop 31
-PalletStops[31].P_Links.Upstream 			REF= PalletStops[30].P_Controls;
-PalletStops[31].P_Links.DownstreamForward 	REF= PalletStops[0].P_Controls;
-
-IF PalletStops[31].P_Controls.ArrivalDetection THEN
-	PalletStops[31].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[31].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
+PalletStops[31].P_Links.Rear	REF= PalletStops[30].P_Controls.Front;
+PalletStops[31].P_Links.Front 	REF= PalletStops[0].P_Controls.Rear;
 
 // Pallet Stop 18b
-PalletStops[32].P_Links.Upstream 			REF= PalletStops[17].P_Controls;
-PalletStops[32].P_Links.DownstreamForward 	REF= PalletStops[19].P_Controls;
+PalletStops[32].P_Links.Rear	REF= PalletStops[17].P_Controls.Front;
+PalletStops[32].P_Links.Front 	REF= PalletStops[19].P_Controls.Rear;
+
+// Release Automatically for normal conveyance, create exclusion list for Stations
+FOR i := 0 TO 32 BY 1 DO
+	IF i <> 20 THEN
+		IF PalletStops[i].P_Controls.ArrivalDetection THEN
+			PalletStops[i].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+		END_IF
+	END_IF
+END_FOR
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////// LTU Linking ///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// LTU 01 (Decision Point)
+LTUs[1].P_Links.Rear 	REF= PalletStops[1].P_Controls.Front; // In
+LTUs[1].P_Links.Front	REF= PalletStops[6].P_Controls.Rear;  // Out
+LTUs[1].P_Links.Left	REF= PalletStops[3].P_Controls.Rear;  // Out
 
+IF LTUs[1].P_Controls.ArrivalDetection THEN
+	LTUs[1].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
+	// LTUs[1].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+END_IF
 
+// LTU 02 (Merge)
+LTUs[2].P_Links.Rear 	REF= PalletStops[7].P_Controls.Front; // In
+LTUs[2].P_Links.Right	REF= PalletStops[6].P_Controls.Front; // In
+LTUs[2].P_Links.Left	REF= PalletStops[10].P_Controls.Rear; // Out
 
+IF LTUs[2].P_Controls.ArrivalDetection THEN
+	LTUs[2].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
+END_IF
 
+// LTU 03 (Decision Point)
+LTUs[3].P_Links.Rear 	REF= PalletStops[10].P_Controls.Front; // In
+LTUs[3].P_Links.Front	REF= PalletStops[18].P_Controls.Rear;  // Out
+LTUs[3].P_Links.Left	REF= PalletStops[12].P_Controls.Rear;  // Out
 
+IF LTUs[3].P_Controls.ArrivalDetection THEN
+	LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
+	// LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+END_IF
 
+// LTU 04 (Bypass)
+LTUs[4].P_Links.Rear 	REF= PalletStops[12].P_Controls.Front; // In
+LTUs[4].P_Links.Right	REF= PalletStops[14].P_Controls.Rear;  // Out
 
+IF LTUs[4].P_Controls.ArrivalDetection THEN
+	LTUs[4].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToRight;
+END_IF
 
+// LTU 05 (Bypass)
+LTUs[5].P_Links.Rear 	REF= PalletStops[18].P_Controls.Front; // In
+LTUs[5].P_Links.Front	REF= LTUs[6].P_Controls.Rear;		   // Out
 
+IF LTUs[5].P_Controls.ArrivalDetection THEN
+	LTUs[5].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+END_IF
 
+// LTU 06 (Merge)
+LTUs[6].P_Links.Rear 	REF= LTUs[5].P_Controls.Front;		   // In
+LTUs[6].P_Links.Left	REF= PalletStops[19].P_Controls.Front; // In
+LTUs[6].P_Links.Right	REF= PalletStops[21].P_Controls.Rear;  // Out
 
-
-
-
-
+IF LTUs[6].P_Controls.ArrivalDetection THEN
+	LTUs[6].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToRight;
+END_IF
 
 
 
@@ -331,6 +351,9 @@ ELSE
 	FOR i := 1 TO 6 BY 1 DO
 		LTUs[i].P_Controls.AreaMonitoring 		:= LTU_PartPresence_AreaMonitor[i].P_Status.isOn;
 		LTUs[i].P_Controls.ArrivalDetection 	:= LTU_PartPresence_DetectArrival[i].P_Status.isOn;
+		IF BigReset THEN
+			LTUs[i].M_Reset();
+		END_IF
 		LTUs[i](HardwareInputArray := GVL.mb_Input_Coils);
 	END_FOR
 END_IF
@@ -355,7 +378,10 @@ ELSE
 	FOR i := 0 TO 32 BY 1 DO
 		PalletStops[i].P_Controls.AreaMonitoring 	:= PalletStop_PartPresence_AreaMonitor[i].P_Status.isOn;
 		PalletStops[i].P_Controls.ArrivalDetection 	:= PalletStop_PartPresence_DetectArrival[i].P_Status.isOn;
-		PalletStops[i](HardwareInputArray := GVL.mb_Input_Coils);
+		IF BigReset THEN
+			PalletStops[i].M_Reset();
+		END_IF
+		PalletStops[i](HardwareInputArray := GVL.mb_Input_Coils);		
 	END_FOR
 END_IF]]></ST>
       </Implementation>
@@ -448,13 +474,25 @@ LTU_PartPresence_AreaMonitor[6].P_Configuration.HardwareInput := GVL.mb_Output_C
 
 FOR i := 0 TO 32 BY 1 DO
 	PalletStop_PartPresence_DetectArrival[i]();
+	PalletStop_PartPresence_DetectArrival[i].P_Configuration.DebounceOnTime := T#250MS;
 	PalletStop_PartPresence_AreaMonitor[i]();
 END_FOR
 
 FOR i := 1 TO 6 BY 1 DO
 	LTU_PartPresence_DetectArrival[i]();
 	LTU_PartPresence_AreaMonitor[i]();
-END_FOR]]></ST>
+END_FOR
+
+// Handle Sim
+GVL.mb_Input_Coils[0] := PauseSimOut;
+GVL.mb_Input_Coils[1] := ResetSimOut;	
+GVL.mb_Input_Coils[2] := RunSimOut;
+
+PauseSimIn := GVL.mb_Output_Coils[0];
+ResetSimIn := GVL.mb_Output_Coils[1];
+RunSimIn := GVL.mb_Output_Coils[2];
+
+]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="MAIN">
@@ -463,25 +501,28 @@ END_FOR]]></ST>
       <LineId Id="114" Count="0" />
       <LineId Id="112" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="70" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="31" Count="1" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="222" Count="0" />
+      <LineId Id="226" Count="1" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="223" Count="1" />
+      <LineId Id="32" Count="0" />
       <LineId Id="117" Count="0" />
       <LineId Id="116" Count="0" />
       <LineId Id="118" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.M_ConveyanceLogic">
+      <LineId Id="433" Count="1" />
+      <LineId Id="420" Count="0" />
+      <LineId Id="423" Count="9" />
+      <LineId Id="421" Count="1" />
+      <LineId Id="418" Count="1" />
       <LineId Id="144" Count="0" />
       <LineId Id="142" Count="1" />
       <LineId Id="145" Count="0" />
       <LineId Id="24" Count="1" />
-      <LineId Id="9" Count="0" />
+      <LineId Id="383" Count="0" />
       <LineId Id="27" Count="2" />
       <LineId Id="26" Count="0" />
       <LineId Id="146" Count="0" />
@@ -528,80 +569,74 @@ END_FOR]]></ST>
       <LineId Id="189" Count="1" />
       <LineId Id="276" Count="1" />
       <LineId Id="191" Count="0" />
-      <LineId Id="309" Count="0" />
-      <LineId Id="308" Count="0" />
-      <LineId Id="310" Count="0" />
-      <LineId Id="362" Count="0" />
-      <LineId Id="311" Count="0" />
-      <LineId Id="279" Count="2" />
+      <LineId Id="389" Count="0" />
+      <LineId Id="280" Count="1" />
       <LineId Id="278" Count="0" />
-      <LineId Id="312" Count="0" />
-      <LineId Id="314" Count="1" />
-      <LineId Id="361" Count="0" />
-      <LineId Id="313" Count="0" />
       <LineId Id="283" Count="2" />
       <LineId Id="282" Count="0" />
-      <LineId Id="316" Count="0" />
-      <LineId Id="318" Count="1" />
-      <LineId Id="360" Count="0" />
-      <LineId Id="317" Count="0" />
       <LineId Id="287" Count="2" />
       <LineId Id="286" Count="0" />
-      <LineId Id="320" Count="0" />
-      <LineId Id="322" Count="1" />
-      <LineId Id="352" Count="0" />
-      <LineId Id="321" Count="0" />
       <LineId Id="291" Count="2" />
       <LineId Id="290" Count="0" />
-      <LineId Id="324" Count="0" />
-      <LineId Id="326" Count="1" />
-      <LineId Id="353" Count="0" />
-      <LineId Id="325" Count="0" />
       <LineId Id="226" Count="0" />
       <LineId Id="294" Count="1" />
-      <LineId Id="227" Count="0" />
-      <LineId Id="328" Count="0" />
-      <LineId Id="330" Count="1" />
-      <LineId Id="354" Count="0" />
-      <LineId Id="329" Count="0" />
-      <LineId Id="228" Count="0" />
+      <LineId Id="227" Count="1" />
       <LineId Id="296" Count="1" />
-      <LineId Id="229" Count="0" />
-      <LineId Id="332" Count="0" />
-      <LineId Id="334" Count="1" />
-      <LineId Id="355" Count="0" />
-      <LineId Id="333" Count="0" />
-      <LineId Id="230" Count="0" />
+      <LineId Id="229" Count="1" />
       <LineId Id="298" Count="1" />
-      <LineId Id="231" Count="0" />
-      <LineId Id="336" Count="0" />
-      <LineId Id="338" Count="1" />
-      <LineId Id="356" Count="0" />
-      <LineId Id="337" Count="0" />
-      <LineId Id="232" Count="0" />
+      <LineId Id="231" Count="1" />
       <LineId Id="300" Count="1" />
       <LineId Id="233" Count="0" />
-      <LineId Id="340" Count="0" />
-      <LineId Id="342" Count="1" />
-      <LineId Id="357" Count="0" />
       <LineId Id="341" Count="0" />
       <LineId Id="234" Count="0" />
       <LineId Id="302" Count="1" />
-      <LineId Id="235" Count="0" />
-      <LineId Id="344" Count="0" />
-      <LineId Id="346" Count="1" />
-      <LineId Id="358" Count="0" />
-      <LineId Id="345" Count="0" />
-      <LineId Id="236" Count="0" />
+      <LineId Id="235" Count="1" />
       <LineId Id="304" Count="1" />
-      <LineId Id="237" Count="0" />
-      <LineId Id="348" Count="0" />
-      <LineId Id="350" Count="1" />
-      <LineId Id="359" Count="0" />
-      <LineId Id="349" Count="0" />
-      <LineId Id="238" Count="0" />
+      <LineId Id="237" Count="1" />
       <LineId Id="306" Count="1" />
-      <LineId Id="239" Count="36" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="390" Count="0" />
+      <LineId Id="384" Count="0" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="416" Count="0" />
+      <LineId Id="387" Count="1" />
+      <LineId Id="385" Count="0" />
+      <LineId Id="417" Count="0" />
+      <LineId Id="386" Count="0" />
+      <LineId Id="241" Count="0" />
+      <LineId Id="435" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="366" Count="1" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="368" Count="0" />
+      <LineId Id="244" Count="3" />
+      <LineId Id="392" Count="3" />
+      <LineId Id="391" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="369" Count="2" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="402" Count="2" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="372" Count="2" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="400" Count="0" />
+      <LineId Id="397" Count="2" />
+      <LineId Id="396" Count="0" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="375" Count="2" />
+      <LineId Id="406" Count="2" />
+      <LineId Id="405" Count="0" />
+      <LineId Id="253" Count="0" />
+      <LineId Id="378" Count="1" />
+      <LineId Id="255" Count="0" />
+      <LineId Id="410" Count="2" />
+      <LineId Id="409" Count="0" />
+      <LineId Id="256" Count="0" />
+      <LineId Id="380" Count="2" />
+      <LineId Id="257" Count="1" />
+      <LineId Id="413" Count="2" />
+      <LineId Id="259" Count="16" />
       <LineId Id="192" Count="5" />
       <LineId Id="173" Count="0" />
     </LineIds>
@@ -621,7 +656,10 @@ END_FOR]]></ST>
       <LineId Id="6" Count="0" />
       <LineId Id="15" Count="1" />
       <LineId Id="25" Count="0" />
-      <LineId Id="17" Count="2" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="19" Count="0" />
       <LineId Id="26" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="24" Count="0" />
@@ -637,6 +675,8 @@ END_FOR]]></ST>
       <LineId Id="9" Count="1" />
       <LineId Id="14" Count="0" />
       <LineId Id="17" Count="1" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="28" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="7" Count="0" />
@@ -662,8 +702,18 @@ END_FOR]]></ST>
       <LineId Id="109" Count="0" />
       <LineId Id="116" Count="5" />
       <LineId Id="115" Count="0" />
-      <LineId Id="124" Count="8" />
+      <LineId Id="124" Count="2" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="127" Count="5" />
       <LineId Id="123" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="139" Count="1" />
+      <LineId Id="143" Count="1" />
+      <LineId Id="141" Count="1" />
+      <LineId Id="138" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_DirectionalControls" Id="{6addd55d-8925-43b5-9100-57ae251659c4}">
+    <Declaration><![CDATA[TYPE ST_DirectionalControls :
+	STRUCT
+		Request 			: E_IndexedPositionSimplifiedRequest;
+		PartPresent 		: BOOL;
+		State				: E_IndexedPositionStates := E_IndexedPositionStates.Starved;
+		OperationMode		: BOOL;
+		isDefined 			: BOOL;
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

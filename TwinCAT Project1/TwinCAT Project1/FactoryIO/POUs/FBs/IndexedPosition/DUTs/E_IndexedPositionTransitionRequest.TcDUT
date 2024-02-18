@@ -6,14 +6,14 @@
 TYPE E_IndexedPositionTransitionRequest :
 (
 	NoRequest,
-	ReceiveLeft,
-	ReceiveRight,
-	ReceiveForward,
-	ReceiveReverse,
-	SendLeft,
-	SendRight,
-	SendForward,
-	SendReverse
+	ReceiveFromLeft,
+	ReceiveFromRight,
+	ReceiveFromFront,
+	ReceiveFromRear,
+	SendToLeft,
+	SendToRight,
+	SendToFront,
+	SendToRear
 );
 END_TYPE
 ]]></Declaration>

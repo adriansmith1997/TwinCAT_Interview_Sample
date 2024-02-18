@@ -3,10 +3,10 @@
   <DUT Name="ST_IndexedPositionLinks" Id="{e30ffb78-c0b7-406f-978a-b16632593a4c}">
     <Declaration><![CDATA[TYPE ST_IndexedPositionLinks :
 	STRUCT
-		Upstream			: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
-		DownstreamForward	: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
-		DownstreamLeft 		: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
-		DownstreamRight		: REFERENCE TO ST_IndexedPositionControls;// := GVL.initializeControls;
+		Front				: REFERENCE TO ST_DirectionalControls;
+		Rear				: REFERENCE TO ST_DirectionalControls;
+		Left				: REFERENCE TO ST_DirectionalControls;
+		Right				: REFERENCE TO ST_DirectionalControls;
 	END_STRUCT
 END_TYPE
 ]]></Declaration>

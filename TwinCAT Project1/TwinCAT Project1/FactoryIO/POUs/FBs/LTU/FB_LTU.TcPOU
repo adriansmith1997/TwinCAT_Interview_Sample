@@ -60,7 +60,16 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[LTUHardwareState := E_LTUHardwareState.NoCommand;
+
+SUPER^.P_Controls.Front.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+SUPER^.P_Controls.Rear.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+SUPER^.P_Controls.Left.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+SUPER^.P_Controls.Right.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+
+SUPER^.P_Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+SUPER^.P_Controls.State := E_IndexedPositionStates.Starved;
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_StateMachine" Id="{401b7a95-1b5d-4eb7-8b1c-33ec096717ce}">
@@ -82,20 +91,20 @@ CASE SUPER^.Controls.State OF
 	E_IndexedPositionStates.Fault:
 		LTUHardwareState := E_LTUHardwareState.NoCommand;
 			
-	E_IndexedPositionStates.ReceivingLeft, 
-	E_IndexedPositionStates.SendingLeft:
+	E_IndexedPositionStates.ReceivingFromRight, 
+	E_IndexedPositionStates.SendingToLeft:
 		LTUHardwareState := E_LTUHardwareState.RunLeft;
 
-	E_IndexedPositionStates.ReceivingRight, 
-	E_IndexedPositionStates.SendingRight:
+	E_IndexedPositionStates.ReceivingFromLeft, 
+	E_IndexedPositionStates.SendingToRight:
 		LTUHardwareState := E_LTUHardwareState.RunRight;
 
-	E_IndexedPositionStates.ReceivingForward, 
-	E_IndexedPositionStates.SendingForward:
+	E_IndexedPositionStates.ReceivingFromRear, 
+	E_IndexedPositionStates.SendingToFront:
 		LTUHardwareState := E_LTUHardwareState.RunForward;
 		
-	E_IndexedPositionStates.ReceivingReverse, 
-	E_IndexedPositionStates.SendingReverse:
+	E_IndexedPositionStates.ReceivingFromFront, 
+	E_IndexedPositionStates.SendingToRear:
 		LTUHardwareState := E_LTUHardwareState.RunReverse;
 		
 	E_IndexedPositionStates.Bypass:
@@ -142,6 +151,11 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_LTU.M_Reset">
       <LineId Id="5" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="9" Count="3" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="1" />
     </LineIds>
     <LineIds Name="FB_LTU.M_StateMachine">
       <LineId Id="272" Count="1" />

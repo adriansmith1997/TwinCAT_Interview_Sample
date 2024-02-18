@@ -32,15 +32,15 @@ VAR
 	BigReset		: BOOL := FALSE;
 END_VAR
 
-// Fill in Reset Methods
-// Set up main method for Material Flow
+
+
 // Set up Error Handling
 // Setup Manual Controls
 // Create TwinCAT HMI for Manual Controls
 // Download free ignition and create scada page
 // Add Logic for sensor decisions
 // Add an Actuator to do something?
-// Save in GIT repo
+
 // Maybe Add Safety and Stack Lights, Safety as real virtual safety
 // Difference between HMI anbd SCADA
 // Maybe Add Some Ladder?

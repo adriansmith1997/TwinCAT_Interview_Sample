@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_IndexedPosition" Id="{2f1b5667-a0f3-4b1e-97a1-207ac542be5f}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC FB_IndexedPosition
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FB_IndexedPosition
 
 VAR
 	// Configuration 		: ST_IndexedPositionConfiguration;

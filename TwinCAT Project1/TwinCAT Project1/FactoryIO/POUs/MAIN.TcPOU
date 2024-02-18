@@ -30,6 +30,9 @@ VAR
 	
 	// Global Reset
 	BigReset		: BOOL := FALSE;
+	
+	// General Controls
+	OpMode			: BOOL := FALSE;
 END_VAR
 
 

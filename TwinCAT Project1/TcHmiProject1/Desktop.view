@@ -2,4 +2,342 @@
   <div id="ViewDesktopBeckhoffLogo" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-src="Images/Beckhoff_Logo.svg" data-tchmi-left="20" data-tchmi-top="20" data-tchmi-width="194" data-tchmi-height="57">
 
   </div>
+<div id="TcHmiButton_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="35" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Reset" data-tchmi-top="200" data-tchmi-top-unit="px" data-tchmi-width="162" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.ResetSimOut%/s%">
+</div>
+<div id="TcHmiToggleButton" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="34" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Pause" data-tchmi-top="157" data-tchmi-top-unit="px" data-tchmi-width="162" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.PauseSimOut%/s%">
+</div>
+<div id="TcHmiToggleButton_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="35" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Run" data-tchmi-top="113" data-tchmi-top-unit="px" data-tchmi-width="162" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.RunSimOut%/s%">
+</div>
+<div id="TcHmiButton_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Power Conveyors On" data-tchmi-top="343" data-tchmi-top-unit="px" data-tchmi-width="162" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.ToggleOn%/s%">
+</div>
+<div id="TcHmiButton_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="23" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Power Conveyors Off" data-tchmi-top="367" data-tchmi-top-unit="px" data-tchmi-width="162" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.ToggleOff%/s%">
+</div>
+<div id="TcHmiTextblock" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Conveyors Powered" data-tchmi-top="316" data-tchmi-top-unit="px" data-tchmi-width="135" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="16">
+</div>
+<div id="TcHmiEllipse" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="22" data-tchmi-height-unit="px" data-tchmi-left="148" data-tchmi-left-unit="px" data-tchmi-top="316" data-tchmi-top-unit="px" data-tchmi-width="22" data-tchmi-width-unit="px">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%PLC1.MAIN.Conveyors.0.Running%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "symbolExpression": "%s%PLC1.MAIN.Conveyors.0.Running%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiEllipse::FillColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(30, 212, 30, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiEllipse::FillColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(231, 28, 36, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiTextblock_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Operation Mode" data-tchmi-top="245" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="16">
+</div>
+<div id="TcHmiToggleSwitch" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Label" data-tchmi-top="276" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-state-symbol="%s%PLC1.MAIN.OpMode%/s%">
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "TcHmiToggleSwitch.onStateChanged",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "symbolExpression": "%s%PLC1.MAIN.OpMode%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiToggleSwitch::Text%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "value": "Auto"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiToggleSwitch::Text%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "value": "Manual"
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmi_Controls_Beckhoff_TcHmiImage" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="390" data-tchmi-height-unit="px" data-tchmi-left="214" data-tchmi-left-unit="px" data-tchmi-src="Images/Layout.png" data-tchmi-top="20" data-tchmi-top-unit="px" data-tchmi-width="246" data-tchmi-width-unit="px">
+</div>
+<div id="TcHmiTextblock_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Simulation Controls" data-tchmi-top="86" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="16">
+</div>
+<div id="LTU_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="328" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="269" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_0" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="326" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="325" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="LTU_2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="326" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="194" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
+
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="LTU_3" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="328" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="124" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 0.0
+  }
+]
+</script>
+</div>
+<div id="LTU_4" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="120" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="LTU_5" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="386" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="75" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="LTU_6" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="419" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="75" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="326" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="296" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="260" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="279" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_3" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="217" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="238" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_4" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="272" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="203" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_5" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="307" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="203" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_6" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="374" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="390" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_7" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="249" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_8" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="272" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="37" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_9" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="299" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="37" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_10" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="337" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="37" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_11" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="365" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="37" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
+<div id="PalletStop_12" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="326" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="350" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_13" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="422" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="341" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_14" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="422" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="309" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_15" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="422" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="279" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_16" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="422" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="254" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_17" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="422" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="228" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_18" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="419" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="203" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_19" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="419" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="176" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_20" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="419" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="148" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_21" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="419" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="124" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_22" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="328" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="224" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_23" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_24" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="369" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="83" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-transform" type="application/json">
+[
+  {
+    "transformType": "Rotate",
+    "angle": 90.0
+  }
+]
+</script>
+</div>
 </div>

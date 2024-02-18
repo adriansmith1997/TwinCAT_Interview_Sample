@@ -27,6 +27,11 @@
     <HmiViewportUserScaleable>Default</HmiViewportUserScaleable>
     <HmiPostProcessing>True</HmiPostProcessing>
     <Name>TcHmiProject1</Name>
+    <HmiCommunicationRouterPort>10100</HmiCommunicationRouterPort>
+    <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
+    <HmiInitial>1.12.760.59</HmiInitial>
+    <HmiRecent>1.12.760.59</HmiRecent>
+    <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>
   </PropertyGroup>
   <PropertyGroup>
     <TwinCATHmi_Tasks>$(TcHmiDirectory)\MSBuild\Beckhoff.TwinCAT.HMI.tasks</TwinCATHmi_Tasks>
@@ -36,7 +41,7 @@
   <Import Project="$(TwinCATHmi_Targets)" />
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>17e8afc9-78ee-4cde-99ee-d74ae998ffe5</ProjectGuid>
+    <ProjectGuid>e5afcd79-5fa1-470b-9038-6a5addd10add</ProjectGuid>
     <RootNamespace>TwinCAT3HmiProject</RootNamespace>
     <AssemblyName>TwinCAT3HmiProject</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -105,16 +110,21 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
+    <Folder Include="Fonts\" />
     <Folder Include="Images" />
     <Folder Include="Images\Manifest" />
     <Folder Include="Imports" />
     <Folder Include="Imports\Images" />
     <Folder Include="Imports\Videos" />
+    <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
     <Folder Include="Themes" />
+    <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />
     <Folder Include="Themes\Base-Dark\" />
-    <Folder Include="Server" />
+    <Folder Include="Server">
+      <WorkingDirectory>TcHmiProject1</WorkingDirectory>
+    </Folder>
     <Folder Include="Properties" />
     <Content Include=".eslintrc.json">
       <Visible>false</Visible>
@@ -359,6 +369,7 @@
       <SubType>Content</SubType>
       <Visible>false</Visible>
     </Content>
+    <Folder Include="Themes\Base\Images\" />
   </ItemGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

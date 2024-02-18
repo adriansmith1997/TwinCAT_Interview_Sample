@@ -52,7 +52,17 @@
       "type": "Stylesheet"
     }
   ],
-  "userControls": [],
+  "userControls": [
+    {
+      "url": "UserControls/PalletStop.usercontrol"
+    },
+    {
+      "url": "UserControls/LTU.usercontrol"
+    },
+    {
+      "url": "UserControls/PalletStop_PopUp.usercontrol"
+    }
+  ],
   "content": [],
   "views": [
     {

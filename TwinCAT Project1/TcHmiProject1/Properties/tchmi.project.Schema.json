@@ -1,4 +1,29 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "definitions": {}
+  "definitions": {
+    "PalletStop": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\PalletStop.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/PalletStop"
+    },
+    "LTU": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\LTU.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/LTU"
+    },
+    "PalletStop_PopUp": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\PalletStop_PopUp.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/PalletStop_PopUp"
+    }
+  }
 }

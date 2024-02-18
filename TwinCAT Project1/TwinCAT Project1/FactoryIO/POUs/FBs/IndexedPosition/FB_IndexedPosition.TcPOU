@@ -8,6 +8,7 @@ VAR
 	Controls			: ST_IndexedPositionControls;
 	// Status				: ST_IndexedPositionStatus;
 	Links				: ST_IndexedPositionLinks;
+	ActivityMonitor		: LREAL := 0;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -70,28 +71,30 @@ CASE Controls.State OF
 					Controls.Rear.Request 	:= E_IndexedPositionSimplifiedRequest.Recieve;
 					// Controls.Request	 	:= E_IndexedPositionTransitionRequest.ReceiveFromRear;
 				END_IF
-				
-			ELSIF __ISVALIDREF(Links.Front) THEN
+			END_IF
+			
+			IF __ISVALIDREF(Links.Front) THEN
 				IF  Links.Front.Request = E_IndexedPositionSimplifiedRequest.Send THEN
 					Controls.State 			:= E_IndexedPositionStates.ReceivingFromFront;
 					Controls.Front.Request 	:= E_IndexedPositionSimplifiedRequest.Recieve;
 					// Controls.Request	 	:= E_IndexedPositionTransitionRequest.ReceiveFromFront;
 				END_IF
+			END_IF
 			
-			ELSIF __ISVALIDREF(Links.Left) THEN
+			IF __ISVALIDREF(Links.Left) THEN
 				IF  Links.Left.Request = E_IndexedPositionSimplifiedRequest.Send THEN
 					Controls.State 			:= E_IndexedPositionStates.ReceivingFromLeft;
 					Controls.Left.Request 	:= E_IndexedPositionSimplifiedRequest.Recieve;
 					// Controls.Request	 	:= E_IndexedPositionTransitionRequest.ReceiveFromLeft;
 				END_IF
+			END_IF
 			
-			ELSIF __ISVALIDREF(Links.Right) THEN
+			IF __ISVALIDREF(Links.Right) THEN
 				IF   Links.Right.Request = E_IndexedPositionSimplifiedRequest.Send THEN
 					Controls.State 			:= E_IndexedPositionStates.ReceivingFromRight;
 					Controls.Right.Request 	:= E_IndexedPositionSimplifiedRequest.Recieve;
 					// Controls.Request	 	:= E_IndexedPositionTransitionRequest.ReceiveFromRight;
 				END_IF
-				
 			END_IF
 			
 		ELSIF Controls.AreaMonitoring AND Controls.Request = E_IndexedPositionTransitionRequest.NoRequest THEN
@@ -212,31 +215,33 @@ CASE Controls.State OF
 						
 				   	Controls.State := E_IndexedPositionStates.Idle;
 				END_IF
-				
-			ELSIF __ISVALIDREF(Links.Left) THEN
+			END_IF
+			
+			IF __ISVALIDREF(Links.Left) THEN
 				IF Controls.Request = E_IndexedPositionTransitionRequest.SendToLeft AND 
 			       NOT Links.Left.PartPresent AND 
 				   Links.Left.Request = E_IndexedPositionSimplifiedRequest.Recieve THEN
 				  
 					Controls.State := E_IndexedPositionStates.Idle;
 				END_IF
-				
-			ELSIF __ISVALIDREF(Links.Rear) THEN
+			END_IF
+			
+			IF __ISVALIDREF(Links.Rear) THEN
 				IF Controls.Request = E_IndexedPositionTransitionRequest.SendToRear AND 
 			       NOT Links.Rear.PartPresent AND 
 				   Links.Rear.Request = E_IndexedPositionSimplifiedRequest.Recieve THEN
 				  
 					Controls.State := E_IndexedPositionStates.Idle;
 				END_IF
-				
-			ELSIF __ISVALIDREF(Links.Right) THEN
+			END_IF
+			
+			IF __ISVALIDREF(Links.Right) THEN
 				IF Controls.Request = E_IndexedPositionTransitionRequest.SendToRight AND 
 			       NOT Links.Right.PartPresent AND 
 				   Links.Right.Request = E_IndexedPositionSimplifiedRequest.Recieve THEN
 				  
 					Controls.State := E_IndexedPositionStates.Idle;
 				END_IF
-				
 			END_IF
 			
 		ELSIF NOT Controls.AreaMonitoring AND NOT Controls.ArrivalDetection  THEN
@@ -375,13 +380,16 @@ END_VAR
       <LineId Id="609" Count="0" />
       <LineId Id="473" Count="0" />
       <LineId Id="574" Count="0" />
-      <LineId Id="474" Count="1" />
+      <LineId Id="474" Count="0" />
+      <LineId Id="637" Count="0" />
+      <LineId Id="475" Count="0" />
       <LineId Id="576" Count="0" />
       <LineId Id="476" Count="0" />
       <LineId Id="610" Count="0" />
       <LineId Id="237" Count="0" />
       <LineId Id="477" Count="0" />
       <LineId Id="577" Count="0" />
+      <LineId Id="638" Count="0" />
       <LineId Id="479" Count="0" />
       <LineId Id="578" Count="0" />
       <LineId Id="480" Count="0" />
@@ -389,13 +397,13 @@ END_VAR
       <LineId Id="478" Count="0" />
       <LineId Id="481" Count="0" />
       <LineId Id="579" Count="0" />
+      <LineId Id="639" Count="0" />
       <LineId Id="483" Count="0" />
       <LineId Id="580" Count="0" />
       <LineId Id="484" Count="0" />
       <LineId Id="612" Count="0" />
       <LineId Id="482" Count="0" />
       <LineId Id="242" Count="0" />
-      <LineId Id="581" Count="0" />
       <LineId Id="575" Count="0" />
       <LineId Id="486" Count="0" />
       <LineId Id="244" Count="1" />
@@ -466,23 +474,24 @@ END_VAR
       <LineId Id="539" Count="0" />
       <LineId Id="313" Count="0" />
       <LineId Id="593" Count="0" />
+      <LineId Id="640" Count="0" />
       <LineId Id="314" Count="0" />
       <LineId Id="592" Count="0" />
       <LineId Id="540" Count="2" />
       <LineId Id="316" Count="0" />
       <LineId Id="318" Count="0" />
       <LineId Id="594" Count="0" />
+      <LineId Id="641" Count="0" />
       <LineId Id="544" Count="0" />
       <LineId Id="595" Count="0" />
       <LineId Id="545" Count="2" />
       <LineId Id="322" Count="1" />
       <LineId Id="596" Count="0" />
+      <LineId Id="642" Count="0" />
       <LineId Id="548" Count="0" />
       <LineId Id="597" Count="0" />
       <LineId Id="549" Count="2" />
-      <LineId Id="327" Count="1" />
-      <LineId Id="598" Count="0" />
-      <LineId Id="329" Count="0" />
+      <LineId Id="327" Count="2" />
       <LineId Id="552" Count="0" />
       <LineId Id="330" Count="4" />
       <LineId Id="553" Count="2" />

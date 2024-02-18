@@ -46,6 +46,24 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Method Name="M_Reset" Id="{c012534f-867f-417e-b453-772258b520a0}">
+      <Declaration><![CDATA[METHOD PUBLIC M_Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[PalletStopHardwareState := E_PalletStopHardwareStates.Lowered;
+
+SUPER^.P_Controls.Front.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+SUPER^.P_Controls.Rear.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+SUPER^.P_Controls.Left.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+SUPER^.P_Controls.Right.Request := E_IndexedPositionSimplifiedRequest.NoRequest;
+
+SUPER^.P_Controls.Request := E_IndexedPositionTransitionRequest.NoRequest;
+SUPER^.P_Controls.State := E_IndexedPositionStates.Starved;
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="M_StateMachine" Id="{411c2fb1-1cb8-41e6-97da-553355b7df91}">
       <Declaration><![CDATA[METHOD PRIVATE M_StateMachine : BOOL
 VAR_INPUT
@@ -101,6 +119,10 @@ END_VAR
       <LineId Id="13" Count="0" />
     </LineIds>
     <LineIds Name="FB_PalletStop.M_Init">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PalletStop.M_Reset">
+      <LineId Id="6" Count="8" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_PalletStop.M_StateMachine">

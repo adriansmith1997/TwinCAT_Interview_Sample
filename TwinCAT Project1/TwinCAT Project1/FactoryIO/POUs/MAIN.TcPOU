@@ -20,7 +20,16 @@ VAR
 	ToggleOff		: BOOL := FALSE;
 	arrayOffset		: DINT := 32768;
 	
-	A : BOOL := FALSE;
+	// Simulation Controls
+	PauseSimOut		: BOOL := FALSE;
+	ResetSimOut		: BOOL := FALSE;
+	RunSimOut		: BOOL := FALSE;
+	PauseSimIn		: BOOL := FALSE;
+	ResetSimIn		: BOOL := FALSE;
+	RunSimIn		: BOOL := FALSE;
+	
+	// Global Reset
+	BigReset		: BOOL := FALSE;
 END_VAR
 
 // Fill in Reset Methods
@@ -43,16 +52,14 @@ M_PalletStops();
 M_LTUs();
 M_ConveyanceLogic();
 
-// Conveyors
-FOR i := 0 TO 16 BY 1 DO
-	IF ToggleOn THEN
-		Conveyors[i].P_Controls.RequestRun := TRUE;
-	ELSIF ToggleOff THEN
-		Conveyors[i].P_Controls.RequestStop := TRUE;
-	END_IF
-END_FOR
-ToggleOn := FALSE;
-ToggleOff := FALSE;
+IF BigReset THEN
+	BigReset := FALSE;
+END_IF
+
+IF ResetSimIn THEN
+	BigReset := TRUE;
+END_IF
+
 
 FirstScan := FALSE;
 ]]></ST>
@@ -64,6 +71,23 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////// Conveyor Motion /////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Conveyors
+FOR i := 0 TO 16 BY 1 DO
+	IF ToggleOn THEN
+		Conveyors[i].P_Controls.RequestRun := TRUE;
+	ELSIF ToggleOff THEN
+		Conveyors[i].P_Controls.RequestStop := TRUE;
+	END_IF
+END_FOR
+ToggleOn := FALSE;
+ToggleOff := FALSE;
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////// Pallet Stop Linking ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -196,10 +220,13 @@ PalletStops[32].P_Links.Front 	REF= PalletStops[19].P_Controls.Rear;
 
 // Release Automatically for normal conveyance, create exclusion list for Stations
 FOR i := 0 TO 32 BY 1 DO
-	IF PalletStops[i].P_Controls.ArrivalDetection THEN
-		PalletStops[i].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	IF i <> 20 THEN
+		IF PalletStops[i].P_Controls.ArrivalDetection THEN
+			PalletStops[i].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+		END_IF
 	END_IF
 END_FOR
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,7 +240,7 @@ LTUs[1].P_Links.Left	REF= PalletStops[3].P_Controls.Rear;  // Out
 
 IF LTUs[1].P_Controls.ArrivalDetection THEN
 	LTUs[1].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
-	//LTUs[1].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	// LTUs[1].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
 END_IF
 
 // LTU 02 (Merge)
@@ -231,8 +258,8 @@ LTUs[3].P_Links.Front	REF= PalletStops[18].P_Controls.Rear;  // Out
 LTUs[3].P_Links.Left	REF= PalletStops[12].P_Controls.Rear;  // Out
 
 IF LTUs[3].P_Controls.ArrivalDetection THEN
-	//LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
-	LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
+	// LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
 END_IF
 
 // LTU 04 (Bypass)
@@ -324,6 +351,9 @@ ELSE
 	FOR i := 1 TO 6 BY 1 DO
 		LTUs[i].P_Controls.AreaMonitoring 		:= LTU_PartPresence_AreaMonitor[i].P_Status.isOn;
 		LTUs[i].P_Controls.ArrivalDetection 	:= LTU_PartPresence_DetectArrival[i].P_Status.isOn;
+		IF BigReset THEN
+			LTUs[i].M_Reset();
+		END_IF
 		LTUs[i](HardwareInputArray := GVL.mb_Input_Coils);
 	END_FOR
 END_IF
@@ -348,7 +378,10 @@ ELSE
 	FOR i := 0 TO 32 BY 1 DO
 		PalletStops[i].P_Controls.AreaMonitoring 	:= PalletStop_PartPresence_AreaMonitor[i].P_Status.isOn;
 		PalletStops[i].P_Controls.ArrivalDetection 	:= PalletStop_PartPresence_DetectArrival[i].P_Status.isOn;
-		PalletStops[i](HardwareInputArray := GVL.mb_Input_Coils);
+		IF BigReset THEN
+			PalletStops[i].M_Reset();
+		END_IF
+		PalletStops[i](HardwareInputArray := GVL.mb_Input_Coils);		
 	END_FOR
 END_IF]]></ST>
       </Implementation>
@@ -448,7 +481,18 @@ END_FOR
 FOR i := 1 TO 6 BY 1 DO
 	LTU_PartPresence_DetectArrival[i]();
 	LTU_PartPresence_AreaMonitor[i]();
-END_FOR]]></ST>
+END_FOR
+
+// Handle Sim
+GVL.mb_Input_Coils[0] := PauseSimOut;
+GVL.mb_Input_Coils[1] := ResetSimOut;	
+GVL.mb_Input_Coils[2] := RunSimOut;
+
+PauseSimIn := GVL.mb_Output_Coils[0];
+ResetSimIn := GVL.mb_Output_Coils[1];
+RunSimIn := GVL.mb_Output_Coils[2];
+
+]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="MAIN">
@@ -457,20 +501,23 @@ END_FOR]]></ST>
       <LineId Id="114" Count="0" />
       <LineId Id="112" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="70" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="31" Count="1" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="222" Count="0" />
+      <LineId Id="226" Count="1" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="223" Count="1" />
+      <LineId Id="32" Count="0" />
       <LineId Id="117" Count="0" />
       <LineId Id="116" Count="0" />
       <LineId Id="118" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.M_ConveyanceLogic">
+      <LineId Id="433" Count="1" />
+      <LineId Id="420" Count="0" />
+      <LineId Id="423" Count="9" />
+      <LineId Id="421" Count="1" />
+      <LineId Id="418" Count="1" />
       <LineId Id="144" Count="0" />
       <LineId Id="142" Count="1" />
       <LineId Id="145" Count="0" />
@@ -551,9 +598,14 @@ END_FOR]]></ST>
       <LineId Id="390" Count="0" />
       <LineId Id="384" Count="0" />
       <LineId Id="240" Count="0" />
+      <LineId Id="416" Count="0" />
       <LineId Id="387" Count="1" />
-      <LineId Id="385" Count="1" />
-      <LineId Id="241" Count="1" />
+      <LineId Id="385" Count="0" />
+      <LineId Id="417" Count="0" />
+      <LineId Id="386" Count="0" />
+      <LineId Id="241" Count="0" />
+      <LineId Id="435" Count="0" />
+      <LineId Id="242" Count="0" />
       <LineId Id="366" Count="1" />
       <LineId Id="243" Count="0" />
       <LineId Id="368" Count="0" />
@@ -604,7 +656,10 @@ END_FOR]]></ST>
       <LineId Id="6" Count="0" />
       <LineId Id="15" Count="1" />
       <LineId Id="25" Count="0" />
-      <LineId Id="17" Count="2" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="19" Count="0" />
       <LineId Id="26" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="24" Count="0" />
@@ -620,6 +675,8 @@ END_FOR]]></ST>
       <LineId Id="9" Count="1" />
       <LineId Id="14" Count="0" />
       <LineId Id="17" Count="1" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="28" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="7" Count="0" />
@@ -649,6 +706,14 @@ END_FOR]]></ST>
       <LineId Id="134" Count="0" />
       <LineId Id="127" Count="5" />
       <LineId Id="123" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="139" Count="1" />
+      <LineId Id="143" Count="1" />
+      <LineId Id="141" Count="1" />
+      <LineId Id="138" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

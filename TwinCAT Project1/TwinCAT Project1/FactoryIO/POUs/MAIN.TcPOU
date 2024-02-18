@@ -149,123 +149,116 @@ PalletStops[19].P_Links.Front 	REF= LTUs[6].P_Controls.Left;
 PalletStops[21].P_Links.Rear	REF= LTUs[6].P_Controls.Right;
 PalletStops[21].P_Links.Front 	REF= PalletStops[22].P_Controls.Rear;
 
-IF PalletStops[21].P_Controls.ArrivalDetection THEN
-	PalletStops[21].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[21].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
-
 // Pallet Stop 22
 PalletStops[22].P_Links.Rear	REF= PalletStops[21].P_Controls.Front;
 PalletStops[22].P_Links.Front 	REF= PalletStops[23].P_Controls.Rear;
-
-IF PalletStops[22].P_Controls.ArrivalDetection THEN
-	PalletStops[22].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[22].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
 
 // Pallet Stop 23
 PalletStops[23].P_Links.Rear	REF= PalletStops[22].P_Controls.Front;
 PalletStops[23].P_Links.Front 	REF= PalletStops[24].P_Controls.Rear;
 
-IF PalletStops[23].P_Controls.ArrivalDetection THEN
-	PalletStops[23].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[23].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
-
 // Pallet Stop 24
 PalletStops[24].P_Links.Rear	REF= PalletStops[23].P_Controls.Front;
 PalletStops[24].P_Links.Front 	REF= PalletStops[25].P_Controls.Rear;
-
-IF PalletStops[24].P_Controls.ArrivalDetection THEN
-	PalletStops[24].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[24].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
 
 // Pallet Stop 25
 PalletStops[25].P_Links.Rear	REF= PalletStops[24].P_Controls.Front;
 PalletStops[25].P_Links.Front 	REF= PalletStops[26].P_Controls.Rear;
 
-IF PalletStops[25].P_Controls.ArrivalDetection THEN
-	PalletStops[25].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[25].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
-
 // Pallet Stop 26
 PalletStops[26].P_Links.Rear	REF= PalletStops[25].P_Controls.Front;
 PalletStops[26].P_Links.Front 	REF= PalletStops[27].P_Controls.Rear;
-
-IF PalletStops[26].P_Controls.ArrivalDetection THEN
-	PalletStops[26].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[26].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
 
 // Pallet Stop 27
 PalletStops[27].P_Links.Rear	REF= PalletStops[26].P_Controls.Front;
 PalletStops[27].P_Links.Front 	REF= PalletStops[28].P_Controls.Rear;
 
-IF PalletStops[27].P_Controls.ArrivalDetection THEN
-	PalletStops[27].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[27].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
-
 // Pallet Stop 28
 PalletStops[28].P_Links.Rear	REF= PalletStops[27].P_Controls.Front;
 PalletStops[28].P_Links.Front 	REF= PalletStops[29].P_Controls.Rear;
-
-IF PalletStops[28].P_Controls.ArrivalDetection THEN
-	PalletStops[28].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[28].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
 
 // Pallet Stop 29
 PalletStops[29].P_Links.Rear	REF= PalletStops[28].P_Controls.Front;
 PalletStops[29].P_Links.Front 	REF= PalletStops[30].P_Controls.Rear;
 
-IF PalletStops[29].P_Controls.ArrivalDetection THEN
-	PalletStops[29].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[29].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
 
 // Pallet Stop 30
 PalletStops[30].P_Links.Rear	REF= PalletStops[29].P_Controls.Front;
 PalletStops[30].P_Links.Front 	REF= PalletStops[31].P_Controls.Rear;
 
-IF PalletStops[30].P_Controls.ArrivalDetection THEN
-	PalletStops[30].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[30].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
-
 // Pallet Stop 31
 PalletStops[31].P_Links.Rear	REF= PalletStops[30].P_Controls.Front;
 PalletStops[31].P_Links.Front 	REF= PalletStops[0].P_Controls.Rear;
-
-IF PalletStops[31].P_Controls.ArrivalDetection THEN
-	PalletStops[31].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
-	//PalletStops[31].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
-END_IF
 
 // Pallet Stop 18b
 PalletStops[32].P_Links.Rear	REF= PalletStops[17].P_Controls.Front;
 PalletStops[32].P_Links.Front 	REF= PalletStops[19].P_Controls.Rear;
 
+// Release Automatically for normal conveyance, create exclusion list for Stations
+FOR i := 0 TO 32 BY 1 DO
+	IF PalletStops[i].P_Controls.ArrivalDetection THEN
+		PalletStops[i].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	END_IF
+END_FOR
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////// LTU Linking ///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// LTU 01 (Decision Point)
+LTUs[1].P_Links.Rear 	REF= PalletStops[1].P_Controls.Front; // In
+LTUs[1].P_Links.Front	REF= PalletStops[6].P_Controls.Rear;  // Out
+LTUs[1].P_Links.Left	REF= PalletStops[3].P_Controls.Rear;  // Out
 
+IF LTUs[1].P_Controls.ArrivalDetection THEN
+	LTUs[1].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
+	//LTUs[1].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+END_IF
 
+// LTU 02 (Merge)
+LTUs[2].P_Links.Rear 	REF= PalletStops[7].P_Controls.Front; // In
+LTUs[2].P_Links.Right	REF= PalletStops[6].P_Controls.Front; // In
+LTUs[2].P_Links.Left	REF= PalletStops[10].P_Controls.Rear; // Out
 
+IF LTUs[2].P_Controls.ArrivalDetection THEN
+	LTUs[2].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
+END_IF
 
+// LTU 03 (Decision Point)
+LTUs[3].P_Links.Rear 	REF= PalletStops[10].P_Controls.Front; // In
+LTUs[3].P_Links.Front	REF= PalletStops[18].P_Controls.Rear;  // Out
+LTUs[3].P_Links.Left	REF= PalletStops[12].P_Controls.Rear;  // Out
 
+IF LTUs[3].P_Controls.ArrivalDetection THEN
+	//LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToLeft;
+	LTUs[3].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+END_IF
 
+// LTU 04 (Bypass)
+LTUs[4].P_Links.Rear 	REF= PalletStops[12].P_Controls.Front; // In
+LTUs[4].P_Links.Right	REF= PalletStops[14].P_Controls.Rear;  // Out
 
+IF LTUs[4].P_Controls.ArrivalDetection THEN
+	LTUs[4].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToRight;
+END_IF
 
+// LTU 05 (Bypass)
+LTUs[5].P_Links.Rear 	REF= PalletStops[18].P_Controls.Front; // In
+LTUs[5].P_Links.Front	REF= LTUs[6].P_Controls.Rear;		   // Out
 
+IF LTUs[5].P_Controls.ArrivalDetection THEN
+	LTUs[5].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+END_IF
 
+// LTU 06 (Merge)
+LTUs[6].P_Links.Rear 	REF= LTUs[5].P_Controls.Front;		   // In
+LTUs[6].P_Links.Left	REF= PalletStops[19].P_Controls.Front; // In
+LTUs[6].P_Links.Right	REF= PalletStops[21].P_Controls.Rear;  // Out
 
-
-
-
-
+IF LTUs[6].P_Controls.ArrivalDetection THEN
+	LTUs[6].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToRight;
+END_IF
 
 
 
@@ -482,7 +475,7 @@ END_FOR]]></ST>
       <LineId Id="142" Count="1" />
       <LineId Id="145" Count="0" />
       <LineId Id="24" Count="1" />
-      <LineId Id="9" Count="0" />
+      <LineId Id="383" Count="0" />
       <LineId Id="27" Count="2" />
       <LineId Id="26" Count="0" />
       <LineId Id="146" Count="0" />
@@ -529,80 +522,69 @@ END_FOR]]></ST>
       <LineId Id="189" Count="1" />
       <LineId Id="276" Count="1" />
       <LineId Id="191" Count="0" />
-      <LineId Id="309" Count="0" />
-      <LineId Id="308" Count="0" />
-      <LineId Id="310" Count="0" />
-      <LineId Id="362" Count="0" />
-      <LineId Id="311" Count="0" />
-      <LineId Id="279" Count="2" />
+      <LineId Id="389" Count="0" />
+      <LineId Id="280" Count="1" />
       <LineId Id="278" Count="0" />
-      <LineId Id="312" Count="0" />
-      <LineId Id="314" Count="1" />
-      <LineId Id="361" Count="0" />
-      <LineId Id="313" Count="0" />
       <LineId Id="283" Count="2" />
       <LineId Id="282" Count="0" />
-      <LineId Id="316" Count="0" />
-      <LineId Id="318" Count="1" />
-      <LineId Id="360" Count="0" />
-      <LineId Id="317" Count="0" />
       <LineId Id="287" Count="2" />
       <LineId Id="286" Count="0" />
-      <LineId Id="320" Count="0" />
-      <LineId Id="322" Count="1" />
-      <LineId Id="352" Count="0" />
-      <LineId Id="321" Count="0" />
       <LineId Id="291" Count="2" />
       <LineId Id="290" Count="0" />
-      <LineId Id="324" Count="0" />
-      <LineId Id="326" Count="1" />
-      <LineId Id="353" Count="0" />
-      <LineId Id="325" Count="0" />
       <LineId Id="226" Count="0" />
       <LineId Id="294" Count="1" />
-      <LineId Id="227" Count="0" />
-      <LineId Id="328" Count="0" />
-      <LineId Id="330" Count="1" />
-      <LineId Id="354" Count="0" />
-      <LineId Id="329" Count="0" />
-      <LineId Id="228" Count="0" />
+      <LineId Id="227" Count="1" />
       <LineId Id="296" Count="1" />
-      <LineId Id="229" Count="0" />
-      <LineId Id="332" Count="0" />
-      <LineId Id="334" Count="1" />
-      <LineId Id="355" Count="0" />
-      <LineId Id="333" Count="0" />
-      <LineId Id="230" Count="0" />
+      <LineId Id="229" Count="1" />
       <LineId Id="298" Count="1" />
-      <LineId Id="231" Count="0" />
-      <LineId Id="336" Count="0" />
-      <LineId Id="338" Count="1" />
-      <LineId Id="356" Count="0" />
-      <LineId Id="337" Count="0" />
-      <LineId Id="232" Count="0" />
+      <LineId Id="231" Count="1" />
       <LineId Id="300" Count="1" />
       <LineId Id="233" Count="0" />
-      <LineId Id="340" Count="0" />
-      <LineId Id="342" Count="1" />
-      <LineId Id="357" Count="0" />
       <LineId Id="341" Count="0" />
       <LineId Id="234" Count="0" />
       <LineId Id="302" Count="1" />
-      <LineId Id="235" Count="0" />
-      <LineId Id="344" Count="0" />
-      <LineId Id="346" Count="1" />
-      <LineId Id="358" Count="0" />
-      <LineId Id="345" Count="0" />
-      <LineId Id="236" Count="0" />
+      <LineId Id="235" Count="1" />
       <LineId Id="304" Count="1" />
-      <LineId Id="237" Count="0" />
-      <LineId Id="348" Count="0" />
-      <LineId Id="350" Count="1" />
-      <LineId Id="359" Count="0" />
-      <LineId Id="349" Count="0" />
-      <LineId Id="238" Count="0" />
+      <LineId Id="237" Count="1" />
       <LineId Id="306" Count="1" />
-      <LineId Id="239" Count="36" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="390" Count="0" />
+      <LineId Id="384" Count="0" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="387" Count="1" />
+      <LineId Id="385" Count="1" />
+      <LineId Id="241" Count="1" />
+      <LineId Id="366" Count="1" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="368" Count="0" />
+      <LineId Id="244" Count="3" />
+      <LineId Id="392" Count="3" />
+      <LineId Id="391" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="369" Count="2" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="402" Count="2" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="372" Count="2" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="400" Count="0" />
+      <LineId Id="397" Count="2" />
+      <LineId Id="396" Count="0" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="375" Count="2" />
+      <LineId Id="406" Count="2" />
+      <LineId Id="405" Count="0" />
+      <LineId Id="253" Count="0" />
+      <LineId Id="378" Count="1" />
+      <LineId Id="255" Count="0" />
+      <LineId Id="410" Count="2" />
+      <LineId Id="409" Count="0" />
+      <LineId Id="256" Count="0" />
+      <LineId Id="380" Count="2" />
+      <LineId Id="257" Count="1" />
+      <LineId Id="413" Count="2" />
+      <LineId Id="259" Count="16" />
       <LineId Id="192" Count="5" />
       <LineId Id="173" Count="0" />
     </LineIds>

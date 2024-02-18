@@ -60,10 +60,10 @@ END_IF*)
 
 CASE SUPER^.Controls.State OF 
 // Would be better as a raise and lower requestr, followed by sensor confirmation that the Pallet Stop was raised or lowered, but no feedback from the simulation :(
-	E_IndexedPositionStates.ReceivingForward, E_IndexedPositionStates.Idle:
+	E_IndexedPositionStates.ReceivingFromRear, E_IndexedPositionStates.Idle:
 		PalletStopHardwareState := E_PalletStopHardwareStates.Raised;
 		
-	E_IndexedPositionStates.SendingForward, E_IndexedPositionStates.Starved:
+	E_IndexedPositionStates.SendingToFront, E_IndexedPositionStates.Starved:
 		PalletStopHardwareState := E_PalletStopHardwareStates.Lowered;
 		
 END_CASE]]></ST>

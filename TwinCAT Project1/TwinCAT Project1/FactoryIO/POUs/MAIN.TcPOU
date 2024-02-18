@@ -68,35 +68,35 @@ END_VAR
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Pallet Stop 00
-PalletStops[0].P_Links.Upstream 			REF= PalletStops[31].P_Controls;
-PalletStops[0].P_Links.DownstreamForward 	REF= PalletStops[1].P_Controls;
+PalletStops[0].P_Links.Rear 	REF= PalletStops[31].P_Controls.Front;
+PalletStops[0].P_Links.Front	REF= PalletStops[1].P_Controls.Rear;
 
 // Pallet Stop 01
-PalletStops[1].P_Links.Upstream 			REF= PalletStops[0].P_Controls;
-PalletStops[1].P_Links.DownstreamForward 	REF= LTUs[1].P_Controls;
+PalletStops[1].P_Links.Rear		REF= PalletStops[0].P_Controls.Front;
+PalletStops[1].P_Links.Front 	REF= LTUs[1].P_Controls.Rear;
 
 // Pallet Stop 02
 // Skipped
 
 // Pallet Stop 03
-PalletStops[3].P_Links.Upstream 			REF= LTUs[1].P_Controls;
-PalletStops[3].P_Links.DownstreamForward 	REF= PalletStops[4].P_Controls;
+PalletStops[3].P_Links.Rear		REF= LTUs[1].P_Controls.Left;
+PalletStops[3].P_Links.Front 	REF= PalletStops[4].P_Controls.Rear;
 
 // Pallet Stop 04
-PalletStops[4].P_Links.Upstream 			REF= PalletStops[3].P_Controls;
-PalletStops[4].P_Links.DownstreamForward 	REF= PalletStops[5].P_Controls;
+PalletStops[4].P_Links.Rear		REF= PalletStops[3].P_Controls.Front;
+PalletStops[4].P_Links.Front 	REF= PalletStops[5].P_Controls.Rear;
 
 // Pallet Stop 05
-PalletStops[5].P_Links.Upstream 			REF= PalletStops[4].P_Controls;
-PalletStops[5].P_Links.DownstreamForward 	REF= PalletStops[7].P_Controls;
+PalletStops[5].P_Links.Rear		REF= PalletStops[4].P_Controls.Front;
+PalletStops[5].P_Links.Front 	REF= PalletStops[7].P_Controls.Rear;
 
 // Pallet Stop 06
-PalletStops[6].P_Links.Upstream 			REF= LTUs[1].P_Controls;
-PalletStops[6].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
+PalletStops[6].P_Links.Rear		REF= LTUs[1].P_Controls.Front;
+PalletStops[6].P_Links.Front 	REF= LTUs[2].P_Controls.Right;
 
 // Pallet Stop 07
-PalletStops[7].P_Links.Upstream 			REF= PalletStops[5].P_Controls;
-PalletStops[7].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
+PalletStops[7].P_Links.Rear		REF= PalletStops[5].P_Controls.Front;
+PalletStops[7].P_Links.Front 	REF= LTUs[2].P_Controls.Rear;
 
 // Pallet Stop 08
 // Skipped
@@ -105,148 +105,148 @@ PalletStops[7].P_Links.DownstreamForward 	REF= LTUs[2].P_Controls;
 // Skipped
 
 // Pallet Stop 10
-PalletStops[10].P_Links.Upstream 			REF= LTUs[2].P_Controls;
-PalletStops[10].P_Links.DownstreamForward 	REF= LTUs[3].P_Controls;;
+PalletStops[10].P_Links.Rear	REF= LTUs[2].P_Controls.Left;
+PalletStops[10].P_Links.Front 	REF= LTUs[3].P_Controls.Rear;;
 
 // Pallet Stop 11
 // Skipped
 
 // Pallet Stop 12
-PalletStops[12].P_Links.Upstream 			REF= LTUs[3].P_Controls;
-PalletStops[12].P_Links.DownstreamForward 	REF= LTUs[4].P_Controls;;
+PalletStops[12].P_Links.Rear	REF= LTUs[3].P_Controls.Left;
+PalletStops[12].P_Links.Front 	REF= LTUs[4].P_Controls.Rear;;
 
 // Pallet Stop 13
 // Skipped
 
 // Pallet Stop 14
-PalletStops[14].P_Links.Upstream 			REF= LTUs[4].P_Controls;
-PalletStops[14].P_Links.DownstreamForward 	REF= PalletStops[15].P_Controls;
+PalletStops[14].P_Links.Rear	REF= LTUs[4].P_Controls.Right;
+PalletStops[14].P_Links.Front 	REF= PalletStops[15].P_Controls.Rear;
 
 // Pallet Stop 15
-PalletStops[15].P_Links.Upstream 			REF= PalletStops[14].P_Controls;
-PalletStops[15].P_Links.DownstreamForward 	REF= PalletStops[16].P_Controls;
+PalletStops[15].P_Links.Rear	REF= PalletStops[14].P_Controls.Front;
+PalletStops[15].P_Links.Front 	REF= PalletStops[16].P_Controls.Rear;
 
 // Pallet Stop 16
-PalletStops[16].P_Links.Upstream 			REF= PalletStops[15].P_Controls;
-PalletStops[16].P_Links.DownstreamForward 	REF= PalletStops[17].P_Controls;
+PalletStops[16].P_Links.Rear	REF= PalletStops[15].P_Controls.Front;
+PalletStops[16].P_Links.Front 	REF= PalletStops[17].P_Controls.Rear;
 
 // Pallet Stop 17
-PalletStops[17].P_Links.Upstream 			REF= PalletStops[16].P_Controls;
-PalletStops[17].P_Links.DownstreamForward 	REF= PalletStops[32].P_Controls; // 18b
+PalletStops[17].P_Links.Rear	REF= PalletStops[16].P_Controls.Front;
+PalletStops[17].P_Links.Front 	REF= PalletStops[32].P_Controls.Rear; // 18b
 
 // Pallet Stop 18
-PalletStops[18].P_Links.Upstream 			REF= LTUs[3].P_Controls;
-PalletStops[18].P_Links.DownstreamForward 	REF= LTUs[5].P_Controls;;
+PalletStops[18].P_Links.Rear	REF= LTUs[3].P_Controls.Front;
+PalletStops[18].P_Links.Front 	REF= LTUs[5].P_Controls.Rear;
 
 // Pallet Stop 19
-PalletStops[19].P_Links.Upstream 			REF= PalletStops[32].P_Controls; // 18b
-PalletStops[19].P_Links.DownstreamForward 	REF= LTUs[6].P_Controls;
+PalletStops[19].P_Links.Rear	REF= PalletStops[32].P_Controls.Front; // 18b
+PalletStops[19].P_Links.Front 	REF= LTUs[6].P_Controls.Left;
 
 // Pallet Stop 20
 // Skipped
 
 // Pallet Stop 21
-PalletStops[21].P_Links.Upstream 			REF= LTUs[6].P_Controls;
-PalletStops[21].P_Links.DownstreamForward 	REF= PalletStops[22].P_Controls;
+PalletStops[21].P_Links.Rear	REF= LTUs[6].P_Controls.Right;
+PalletStops[21].P_Links.Front 	REF= PalletStops[22].P_Controls.Rear;
 
 IF PalletStops[21].P_Controls.ArrivalDetection THEN
-	PalletStops[21].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[21].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[21].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[21].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 22
-PalletStops[22].P_Links.Upstream 			REF= PalletStops[21].P_Controls;
-PalletStops[22].P_Links.DownstreamForward 	REF= PalletStops[23].P_Controls;
+PalletStops[22].P_Links.Rear	REF= PalletStops[21].P_Controls.Front;
+PalletStops[22].P_Links.Front 	REF= PalletStops[23].P_Controls.Rear;
 
 IF PalletStops[22].P_Controls.ArrivalDetection THEN
-	PalletStops[22].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[22].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[22].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[22].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 23
-PalletStops[23].P_Links.Upstream 			REF= PalletStops[22].P_Controls;
-PalletStops[23].P_Links.DownstreamForward 	REF= PalletStops[24].P_Controls;
+PalletStops[23].P_Links.Rear	REF= PalletStops[22].P_Controls.Front;
+PalletStops[23].P_Links.Front 	REF= PalletStops[24].P_Controls.Rear;
 
 IF PalletStops[23].P_Controls.ArrivalDetection THEN
-	PalletStops[23].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[23].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[23].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[23].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 24
-PalletStops[24].P_Links.Upstream 			REF= PalletStops[23].P_Controls;
-PalletStops[24].P_Links.DownstreamForward 	REF= PalletStops[25].P_Controls;
+PalletStops[24].P_Links.Rear	REF= PalletStops[23].P_Controls.Front;
+PalletStops[24].P_Links.Front 	REF= PalletStops[25].P_Controls.Rear;
 
 IF PalletStops[24].P_Controls.ArrivalDetection THEN
-	PalletStops[24].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[24].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[24].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[24].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 25
-PalletStops[25].P_Links.Upstream 			REF= PalletStops[24].P_Controls;
-PalletStops[25].P_Links.DownstreamForward 	REF= PalletStops[26].P_Controls;
+PalletStops[25].P_Links.Rear	REF= PalletStops[24].P_Controls.Front;
+PalletStops[25].P_Links.Front 	REF= PalletStops[26].P_Controls.Rear;
 
 IF PalletStops[25].P_Controls.ArrivalDetection THEN
-	PalletStops[25].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[25].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[25].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[25].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 26
-PalletStops[26].P_Links.Upstream 			REF= PalletStops[25].P_Controls;
-PalletStops[26].P_Links.DownstreamForward 	REF= PalletStops[27].P_Controls;
+PalletStops[26].P_Links.Rear	REF= PalletStops[25].P_Controls.Front;
+PalletStops[26].P_Links.Front 	REF= PalletStops[27].P_Controls.Rear;
 
 IF PalletStops[26].P_Controls.ArrivalDetection THEN
-	PalletStops[26].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[26].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[26].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[26].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 27
-PalletStops[27].P_Links.Upstream 			REF= PalletStops[26].P_Controls;
-PalletStops[27].P_Links.DownstreamForward 	REF= PalletStops[28].P_Controls;
+PalletStops[27].P_Links.Rear	REF= PalletStops[26].P_Controls.Front;
+PalletStops[27].P_Links.Front 	REF= PalletStops[28].P_Controls.Rear;
 
 IF PalletStops[27].P_Controls.ArrivalDetection THEN
-	PalletStops[27].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[27].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[27].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[27].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 28
-PalletStops[28].P_Links.Upstream 			REF= PalletStops[27].P_Controls;
-PalletStops[28].P_Links.DownstreamForward 	REF= PalletStops[29].P_Controls;
+PalletStops[28].P_Links.Rear	REF= PalletStops[27].P_Controls.Front;
+PalletStops[28].P_Links.Front 	REF= PalletStops[29].P_Controls.Rear;
 
 IF PalletStops[28].P_Controls.ArrivalDetection THEN
-	PalletStops[28].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[28].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[28].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[28].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 29
-PalletStops[29].P_Links.Upstream 			REF= PalletStops[28].P_Controls;
-PalletStops[29].P_Links.DownstreamForward 	REF= PalletStops[30].P_Controls;
+PalletStops[29].P_Links.Rear	REF= PalletStops[28].P_Controls.Front;
+PalletStops[29].P_Links.Front 	REF= PalletStops[30].P_Controls.Rear;
 
 IF PalletStops[29].P_Controls.ArrivalDetection THEN
-	PalletStops[29].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[29].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[29].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[29].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 30
-PalletStops[30].P_Links.Upstream 			REF= PalletStops[29].P_Controls;
-PalletStops[30].P_Links.DownstreamForward 	REF= PalletStops[31].P_Controls;
+PalletStops[30].P_Links.Rear	REF= PalletStops[29].P_Controls.Front;
+PalletStops[30].P_Links.Front 	REF= PalletStops[31].P_Controls.Rear;
 
 IF PalletStops[30].P_Controls.ArrivalDetection THEN
-	PalletStops[30].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[30].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[30].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[30].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 31
-PalletStops[31].P_Links.Upstream 			REF= PalletStops[30].P_Controls;
-PalletStops[31].P_Links.DownstreamForward 	REF= PalletStops[0].P_Controls;
+PalletStops[31].P_Links.Rear	REF= PalletStops[30].P_Controls.Front;
+PalletStops[31].P_Links.Front 	REF= PalletStops[0].P_Controls.Rear;
 
 IF PalletStops[31].P_Controls.ArrivalDetection THEN
-	PalletStops[31].P_Controls.Request := E_IndexedPositionTransitionRequest.SendForward;
-	PalletStops[31].P_Links.DownstreamForward.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
+	PalletStops[31].P_Controls.Request := E_IndexedPositionTransitionRequest.SendToFront;
+	//PalletStops[31].P_Links.Front.Request := E_IndexedPositionTransitionRequest.ReceiveForward;
 END_IF
 
 // Pallet Stop 18b
-PalletStops[32].P_Links.Upstream 			REF= PalletStops[17].P_Controls;
-PalletStops[32].P_Links.DownstreamForward 	REF= PalletStops[19].P_Controls;
+PalletStops[32].P_Links.Rear	REF= PalletStops[17].P_Controls.Front;
+PalletStops[32].P_Links.Front 	REF= PalletStops[19].P_Controls.Rear;
 
 
 
@@ -448,6 +448,7 @@ LTU_PartPresence_AreaMonitor[6].P_Configuration.HardwareInput := GVL.mb_Output_C
 
 FOR i := 0 TO 32 BY 1 DO
 	PalletStop_PartPresence_DetectArrival[i]();
+	PalletStop_PartPresence_DetectArrival[i].P_Configuration.DebounceOnTime := T#250MS;
 	PalletStop_PartPresence_AreaMonitor[i]();
 END_FOR
 
@@ -662,7 +663,9 @@ END_FOR]]></ST>
       <LineId Id="109" Count="0" />
       <LineId Id="116" Count="5" />
       <LineId Id="115" Count="0" />
-      <LineId Id="124" Count="8" />
+      <LineId Id="124" Count="2" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="127" Count="5" />
       <LineId Id="123" Count="0" />
     </LineIds>
   </POU>

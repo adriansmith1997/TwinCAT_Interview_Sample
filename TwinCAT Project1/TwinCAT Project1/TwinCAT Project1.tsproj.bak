@@ -15,7 +15,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{CCE1CE5C-87E1-4385-9A95-467EA156069A}" Name="FactoryIO" PrjFilePath="FactoryIO\FactoryIO.plcproj" TmcFilePath="FactoryIO\FactoryIO.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="FactoryIO\FactoryIO.tmc" TmcHash="{E6A91A61-450B-7DEE-95E3-55D5A768B9D5}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="FactoryIO\FactoryIO.tmc" TmcHash="{E8AAF2D7-8F9F-9B57-1503-D51944627917}">
 					<Name>FactoryIO Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

@@ -40,10 +40,16 @@
     <Compile Include="POUs\FBs\Conveyor\FB_Conveyor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FBs\IndexedPosition\DUTs\E_IndexedPositionSimplifiedRequest.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FBs\IndexedPosition\DUTs\E_IndexedPositionStates.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FBs\IndexedPosition\DUTs\E_IndexedPositionTransitionRequest.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FBs\IndexedPosition\DUTs\ST_DirectionalControls.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FBs\IndexedPosition\DUTs\ST_IndexedPositionControls.TcDUT">

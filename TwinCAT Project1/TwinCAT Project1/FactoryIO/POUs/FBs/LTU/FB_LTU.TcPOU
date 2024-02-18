@@ -82,20 +82,20 @@ CASE SUPER^.Controls.State OF
 	E_IndexedPositionStates.Fault:
 		LTUHardwareState := E_LTUHardwareState.NoCommand;
 			
-	E_IndexedPositionStates.ReceivingLeft, 
-	E_IndexedPositionStates.SendingLeft:
+	E_IndexedPositionStates.ReceivingFromRight, 
+	E_IndexedPositionStates.SendingToLeft:
 		LTUHardwareState := E_LTUHardwareState.RunLeft;
 
-	E_IndexedPositionStates.ReceivingRight, 
-	E_IndexedPositionStates.SendingRight:
+	E_IndexedPositionStates.ReceivingFromLeft, 
+	E_IndexedPositionStates.SendingToRight:
 		LTUHardwareState := E_LTUHardwareState.RunRight;
 
-	E_IndexedPositionStates.ReceivingForward, 
-	E_IndexedPositionStates.SendingForward:
+	E_IndexedPositionStates.ReceivingFromRear, 
+	E_IndexedPositionStates.SendingToFront:
 		LTUHardwareState := E_LTUHardwareState.RunForward;
 		
-	E_IndexedPositionStates.ReceivingReverse, 
-	E_IndexedPositionStates.SendingReverse:
+	E_IndexedPositionStates.ReceivingFromFront, 
+	E_IndexedPositionStates.SendingToRear:
 		LTUHardwareState := E_LTUHardwareState.RunReverse;
 		
 	E_IndexedPositionStates.Bypass:

@@ -18,6 +18,10 @@
                 popupParametersControl['data-tchmi-top'] = 0;
                 popupParametersControl['data-tchmi-height'] = 200;
                 popupParametersControl['data-tchmi-width'] = 370;
+                popupParametersControl['data-tchmi-palletstopname'] = Name;
+                popupParametersControl['data-tchmi-palletstoprequest'] = Request;
+                popupParametersControl['data-tchmi-palletstoppp'] = PP;
+                popupParametersControl['data-tchmi-palletstopstatus'] = Status;
 
                 WhereToInsert = "Desktop"
 

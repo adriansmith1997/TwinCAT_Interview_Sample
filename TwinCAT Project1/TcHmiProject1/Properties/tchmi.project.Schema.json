@@ -6,8 +6,8 @@
       "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
       "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
       "frameworkUserControlConfig": "UserControls\\PalletStop_PopUp.usercontrol.json",
-      "type": "object",
-      "id": "tchmi:project#/definitions/PalletStop_PopUp"
+      "id": "tchmi:project#/definitions/PalletStop_PopUp",
+      "type": "object"
     },
     "PalletStop": {
       "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",

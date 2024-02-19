@@ -67,6 +67,23 @@
       "propertySetterName": "setPalletStopStatus",
       "propertyGetterName": "getPalletStopStatus",
       "refTo": ""
+    },
+    {
+      "name": "data-tchmi-opmode",
+      "displayName": "OpMode",
+      "allowSymbolExpressionsInObject": false,
+      "visible": true,
+      "type": "tchmi:general#/definitions/BOOL",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "OpMode",
+      "propertySetterName": "setOpMode",
+      "propertyGetterName": "getOpMode",
+      "refTo": ""
     }
   ],
   "virtualRights": [],

@@ -27,7 +27,142 @@
     "DEFAULTTIMEFORMATLOCALE": "client",
     "DEFAULTTIMEZONE": "client",
     "DEFAULTUSERGROUP": "__SystemUsers",
-    "DEFINITIONS": {},
+    "DEFINITIONS": {
+        "PLC1.E_IndexedPositionStates": {
+            "attributes": {
+                "generate_implicit_init_function": "",
+                "qualified_only": "",
+                "strict": ""
+            },
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "options": [
+                {
+                    "label": "Starved",
+                    "value": 0
+                },
+                {
+                    "label": "Idle",
+                    "value": 1
+                },
+                {
+                    "label": "Blocked",
+                    "value": 2
+                },
+                {
+                    "label": "ReceivingFromLeft",
+                    "value": 3
+                },
+                {
+                    "label": "ReceivingFromRight",
+                    "value": 4
+                },
+                {
+                    "label": "ReceivingFromFront",
+                    "value": 5
+                },
+                {
+                    "label": "ReceivingFromRear",
+                    "value": 6
+                },
+                {
+                    "label": "SendingToLeft",
+                    "value": 7
+                },
+                {
+                    "label": "SendingToRight",
+                    "value": 8
+                },
+                {
+                    "label": "SendingToFront",
+                    "value": 9
+                },
+                {
+                    "label": "SendingToRear",
+                    "value": 10
+                },
+                {
+                    "label": "Bypass",
+                    "value": 11
+                },
+                {
+                    "label": "Fault",
+                    "value": 12
+                }
+            ],
+            "type": "integer"
+        },
+        "PLC1.E_IndexedPositionTransitionRequest": {
+            "attributes": {
+                "generate_implicit_init_function": "",
+                "qualified_only": "",
+                "strict": ""
+            },
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ],
+            "options": [
+                {
+                    "label": "NoRequest",
+                    "value": 0
+                },
+                {
+                    "label": "ReceiveFromLeft",
+                    "value": 1
+                },
+                {
+                    "label": "ReceiveFromRight",
+                    "value": 2
+                },
+                {
+                    "label": "ReceiveFromFront",
+                    "value": 3
+                },
+                {
+                    "label": "ReceiveFromRear",
+                    "value": 4
+                },
+                {
+                    "label": "SendToLeft",
+                    "value": 5
+                },
+                {
+                    "label": "SendToRight",
+                    "value": 6
+                },
+                {
+                    "label": "SendToFront",
+                    "value": 7
+                },
+                {
+                    "label": "SendToRear",
+                    "value": 8
+                }
+            ],
+            "type": "integer"
+        }
+    },
     "DEFLATECOMPRESSIONLEVEL": 5,
     "DIAGNOSTICS_DOMAINS": [],
     "DISABLED_CONFIGURATION_HINTS": [],
@@ -2543,6 +2678,92 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.MAIN.PalletStops.0.Configuration.Name": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStops[0]::Configuration::Name",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "comment": "Name of the PalletStop",
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.MAIN.PalletStops.0.Controls.AreaMonitoring": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStops[0]::Controls::AreaMonitoring",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.MAIN.PalletStops.0.Controls.Request": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStops[0]::Controls::Request",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/PLC1.E_IndexedPositionTransitionRequest"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.MAIN.PalletStops.0.Controls.State": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStops[0]::Controls::State",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/PLC1.E_IndexedPositionStates"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.MAIN.PalletStops.0.PalletStopHardwareState": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStops[0]::PalletStopHardwareState",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/DINT"
+                    },
+                    {
+                        "propertyOrder": 8
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "PLC1.MAIN.PauseSimOut": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -3521,6 +3742,11 @@
                 "Logout": 3,
                 "PLC1.MAIN.Conveyors.0.Running": 3,
                 "PLC1.MAIN.OpMode": 3,
+                "PLC1.MAIN.PalletStops.0.Configuration.Name": 3,
+                "PLC1.MAIN.PalletStops.0.Controls.AreaMonitoring": 3,
+                "PLC1.MAIN.PalletStops.0.Controls.Request": 3,
+                "PLC1.MAIN.PalletStops.0.Controls.State": 3,
+                "PLC1.MAIN.PalletStops.0.PalletStopHardwareState": 3,
                 "PLC1.MAIN.PauseSimOut": 3,
                 "PLC1.MAIN.ResetSimOut": 3,
                 "PLC1.MAIN.RunSimOut": 3,

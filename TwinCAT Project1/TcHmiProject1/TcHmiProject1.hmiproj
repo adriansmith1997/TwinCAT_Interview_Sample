@@ -27,6 +27,11 @@
     <HmiViewportUserScaleable>Default</HmiViewportUserScaleable>
     <HmiPostProcessing>True</HmiPostProcessing>
     <Name>TcHmiProject1</Name>
+    <HmiCommunicationRouterPort>10100</HmiCommunicationRouterPort>
+    <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
+    <HmiInitial>1.12.760.59</HmiInitial>
+    <HmiRecent>1.12.760.59</HmiRecent>
+    <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>
   </PropertyGroup>
   <PropertyGroup>
     <TwinCATHmi_Tasks>$(TcHmiDirectory)\MSBuild\Beckhoff.TwinCAT.HMI.tasks</TwinCATHmi_Tasks>
@@ -105,19 +110,97 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
+    <Content Include="Images\Layout.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\LTU.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\PalletStopImage.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Script\ClosePopup.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Script\ClosePopup.js</DependentUpon>
+    </Content>
+    <Content Include="Script\ClosePopup.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Script\OpenPopup.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Script\OpenPopup.js</DependentUpon>
+    </Content>
+    <Content Include="Script\OpenPopup.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\LTU.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\LTU.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\LTU.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\PalletStop.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\PalletStop.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\PalletStop.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\PalletStop_PopUp.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\PalletStop_PopUp.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\PalletStop_PopUp.usercontrol</DependentUpon>
+    </Content>
+    <Folder Include="Fonts\" />
     <Folder Include="Images" />
     <Folder Include="Images\Manifest" />
     <Folder Include="Imports" />
     <Folder Include="Imports\Images" />
     <Folder Include="Imports\Videos" />
+    <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
+    <Folder Include="Script" />
+    <Folder Include="UserControls" />
     <Folder Include="Themes" />
+    <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />
     <Folder Include="Themes\Base-Dark\" />
-    <Folder Include="Server" />
+    <Folder Include="Server">
+      <WorkingDirectory>TcHmiProject1</WorkingDirectory>
+    </Folder>
     <Folder Include="Properties" />
     <Content Include=".eslintrc.json">
       <Visible>false</Visible>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Storage.json">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="tsconfig.tpl.json">
       <SubType>Content</SubType>
@@ -359,6 +442,7 @@
       <SubType>Content</SubType>
       <Visible>false</Visible>
     </Content>
+    <Folder Include="Themes\Base\Images\" />
   </ItemGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

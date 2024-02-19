@@ -14,8 +14,8 @@
       "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
       "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
       "frameworkUserControlConfig": "UserControls\\PalletStop.usercontrol.json",
-      "type": "object",
-      "id": "tchmi:project#/definitions/PalletStop"
+      "id": "tchmi:project#/definitions/PalletStop",
+      "type": "object"
     },
     "LTU": {
       "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",

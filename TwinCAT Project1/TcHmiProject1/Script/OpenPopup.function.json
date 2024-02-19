@@ -83,6 +83,18 @@
         "restParameter": false,
         "asReference": false,
         "allowControlAttributeBindingOptions": false
+      },
+      {
+        "name": "OpMode",
+        "displayName": "OpMode",
+        "type": "tchmi:general#/definitions/BOOL",
+        "description": "",
+        "defaultValue": "",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false,
+        "allowControlAttributeBindingOptions": false
       }
     ]
   },

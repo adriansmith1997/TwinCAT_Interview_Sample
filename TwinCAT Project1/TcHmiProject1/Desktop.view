@@ -152,4 +152,10 @@
 </div>
 <div id="TcHmiButton_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="23" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Power Off" data-tchmi-top="418" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.ToggleOff%/s%">
 </div>
+<div id="TcHmi_Controls_Beckhoff_TcHmiImage_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="421" data-tchmi-height-unit="px" data-tchmi-left="224" data-tchmi-left-unit="px" data-tchmi-src="Images/Layout.png" data-tchmi-top="20" data-tchmi-top-unit="px" data-tchmi-width="254" data-tchmi-width-unit="px">
+</div>
+<div id="LTU_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="342" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="290" data-tchmi-top-unit="px" data-tchmi-width="31" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_00" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="6" data-tchmi-height-unit="px" data-tchmi-left="342" data-tchmi-left-unit="px" data-tchmi-palletstopname="%s%PLC1.MAIN.PalletStops.0.Configuration.Name%/s%" data-tchmi-palletstoprequest="%s%PLC1.MAIN.PalletStops.0.PalletStopHardwareState%/s%" data-tchmi-palletstopstatus="%s%PLC1.MAIN.PalletStops.0.Controls.State%/s%" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="349" data-tchmi-top-unit="px" data-tchmi-width="31" data-tchmi-width-unit="px" data-tchmi-palletstoppp="%s%PLC1.MAIN.PalletStops.0.Controls.AreaMonitoring%/s%" data-tchmi-opmode="%ctrl%TcHmiToggleSwitch%/ctrl%">
+</div>
 </div>

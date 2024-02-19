@@ -6,7 +6,7 @@
         var TcHmiProject1;
         (function (TcHmiProject1)
         {
-            function OpenPopup(OpeningPopup, WhereToInsert, Name, PP, Request, Status) {
+            function OpenPopup(OpeningPopup, WhereToInsert, Name, PP, Request, Status, OpMode) {
                 var popupParametersControl = [];
                 var PopupUuid = String("Popup");
                 var popup;
@@ -22,6 +22,7 @@
                 popupParametersControl['data-tchmi-palletstoprequest'] = Request;
                 popupParametersControl['data-tchmi-palletstoppp'] = PP;
                 popupParametersControl['data-tchmi-palletstopstatus'] = Status;
+                popupParametersControl['data-tchmi-palletstop-opmode'] = OpMode;
 
                 WhereToInsert = "Desktop"
 

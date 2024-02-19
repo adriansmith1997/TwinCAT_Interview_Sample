@@ -50,6 +50,16 @@
       "name": "Fonts/Fonts.css",
       "description": "",
       "type": "Stylesheet"
+    },
+    {
+      "name": "Script/ClosePopup.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Script/OpenPopup.js",
+      "description": "",
+      "type": "JavaScript"
     }
   ],
   "userControls": [
@@ -72,7 +82,14 @@
       "preloadBindings": false
     }
   ],
-  "userFunctions": [],
+  "userFunctions": [
+    {
+      "url": "Script/ClosePopup.js"
+    },
+    {
+      "url": "Script/OpenPopup.js"
+    }
+  ],
   "symbols": {
     "internal": {},
     "themedResources": {}

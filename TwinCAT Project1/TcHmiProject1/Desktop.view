@@ -158,7 +158,7 @@
 </div>
 <div id="LTU_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="328" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="269" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
 </div>
-<div id="PalletStop_0" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="326" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="325" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+<div id="PalletStop_0" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="326" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="325" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px" data-tchmi-palletstopname="Test">
 </div>
 <div id="LTU_2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="326" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="194" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px">
 

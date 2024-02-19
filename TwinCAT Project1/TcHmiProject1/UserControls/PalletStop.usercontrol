@@ -1,7 +1,55 @@
 <div id="PalletStop" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="73" data-tchmi-height="20" data-tchmi-width-unit="px" data-tchmi-height-unit="px" data-tchmi-creator-viewport-width="160" data-tchmi-creator-viewport-height="160">
 
 <div id="TcHmi_Controls_Beckhoff_TcHmiImage_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="7" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-src="Images/PalletStopImage.png" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="31" data-tchmi-width-unit="px">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "TcHmi_Controls_Beckhoff_TcHmiImage_1.onPressed",
+    "actions": [
+      {
+        "objectType": "Function",
+        "active": true,
+        "fn": "TcHmi.Functions.Popup_DataBackAndForth.OpenPopup",
+        "fnParams": [
+          {
+            "objectType": "StaticValue",
+            "valueType": "tchmi:framework#/definitions/Path",
+            "value": "UserControls/PalletStop_PopUp.usercontrol"
+          },
+          {
+            "objectType": "StaticValue",
+            "valueType": "tchmi:framework#/definitions/Control",
+            "value": ""
+          },
+          {
+            "objectType": "Symbol",
+            "valueType": "tchmi:general#/definitions/String",
+            "symbolExpression": "%pp%PalletStopName%/pp%"
+          },
+          {
+            "objectType": "Symbol",
+            "valueType": "tchmi:general#/definitions/BOOL",
+            "symbolExpression": "%pp%PalletStopPP%/pp%"
+          },
+          {
+            "objectType": "Symbol",
+            "valueType": "tchmi:general#/definitions/INT",
+            "symbolExpression": "%pp%PalletStopRequest%/pp%"
+          },
+          {
+            "objectType": "Symbol",
+            "valueType": "tchmi:general#/definitions/INT",
+            "symbolExpression": "%pp%PalletStopStatus%/pp%"
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
 </div>
-<div id="TcHmiPopup" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-height="9" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="33" data-tchmi-width-unit="px">
-</div>
+
+
 </div>

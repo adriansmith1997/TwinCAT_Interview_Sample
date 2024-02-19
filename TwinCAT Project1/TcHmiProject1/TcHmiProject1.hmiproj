@@ -110,6 +110,53 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
+    <Content Include="Images\Layout.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\LTU.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\PalletStopImage.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Script\ClosePopup.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Script\ClosePopup.js</DependentUpon>
+    </Content>
+    <Content Include="Script\ClosePopup.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Script\OpenPopup.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Script\OpenPopup.js</DependentUpon>
+    </Content>
+    <Content Include="Script\OpenPopup.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Script\TcHmiEx.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\LTU.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\LTU.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\LTU.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\PalletStop.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\PalletStop.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\PalletStop.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\PalletStop_PopUp.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\PalletStop_PopUp.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\PalletStop_PopUp.usercontrol</DependentUpon>
+    </Content>
     <Folder Include="Fonts\" />
     <Folder Include="Images" />
     <Folder Include="Images\Manifest" />
@@ -118,6 +165,8 @@
     <Folder Include="Imports\Videos" />
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
+    <Folder Include="Script" />
+    <Folder Include="UserControls" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />

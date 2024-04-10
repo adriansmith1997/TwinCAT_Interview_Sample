@@ -30,6 +30,8 @@ VAR
 	
 	// Global Reset
 	BigReset		: BOOL := FALSE;
+	
+	OpMode			: BOOL := FALSE;
 END_VAR
 
 
@@ -378,6 +380,7 @@ ELSE
 	FOR i := 0 TO 32 BY 1 DO
 		PalletStops[i].P_Controls.AreaMonitoring 	:= PalletStop_PartPresence_AreaMonitor[i].P_Status.isOn;
 		PalletStops[i].P_Controls.ArrivalDetection 	:= PalletStop_PartPresence_DetectArrival[i].P_Status.isOn;
+		PalletStops[i].P_Controls.OperationMode		:= OpMode;
 		IF BigReset THEN
 			PalletStops[i].M_Reset();
 		END_IF
@@ -675,6 +678,7 @@ RunSimIn := GVL.mb_Output_Coils[2];
       <LineId Id="9" Count="1" />
       <LineId Id="14" Count="0" />
       <LineId Id="17" Count="1" />
+      <LineId Id="34" Count="0" />
       <LineId Id="29" Count="1" />
       <LineId Id="28" Count="0" />
       <LineId Id="15" Count="0" />

@@ -1,0 +1,161 @@
+<div id="Desktop" data-tchmi-type="TcHmi.Controls.System.TcHmiView" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width-mode="Content" data-tchmi-min-width="100" data-tchmi-min-width-unit="%" data-tchmi-height-mode="Content" data-tchmi-min-height="100" data-tchmi-min-height-unit="%">
+  <div id="ViewDesktopBeckhoffLogo" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-src="Images/Beckhoff_Logo.svg" data-tchmi-left="20" data-tchmi-top="20" data-tchmi-width="194" data-tchmi-height="57">
+
+  </div>
+<div id="TcHmiTextblock_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Simulation Controls" data-tchmi-top="87" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="24">
+</div>
+<div id="TcHmiToggleButton" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="42" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Run" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.RunSimOut%/s%">
+</div>
+<div id="TcHmiToggleButton_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="42" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Pause" data-tchmi-top="181" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.PauseSimOut%/s%">
+</div>
+<div id="TcHmiButton" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="39" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Reset" data-tchmi-top="233" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.ResetSimOut%/s%">
+</div>
+<div id="TcHmiTextblock_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="31" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Operation Mode" data-tchmi-top="282" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="24">
+</div>
+<div id="TcHmiToggleSwitch" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="" data-tchmi-top="323" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-state-symbol="%s%PLC1.MAIN.OpMode%/s%">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "TcHmiToggleSwitch.onToggleStateChanged",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "symbolExpression": "%ctrl%TcHmiToggleSwitch::ToggleState%/ctrl%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/ToggleState",
+                  "value": "Normal"
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiToggleSwitch::Text%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "value": "Manual"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiToggleSwitch::Text%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "value": "Automatic"
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiTextblock_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Conveyors Powered" data-tchmi-top="359" data-tchmi-top-unit="px" data-tchmi-width="152" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="18">
+</div>
+<div id="TcHmiEllipse_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="182" data-tchmi-left-unit="px" data-tchmi-top="359" data-tchmi-top-unit="px" data-tchmi-width="32" data-tchmi-width-unit="px">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%PLC1.MAIN.Conveyors.0.Running%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "symbolExpression": "%s%PLC1.MAIN.Conveyors.0.Running%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiEllipse_2::FillColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(24, 246, 15, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiEllipse_2::FillColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(241, 14, 14, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiButton_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="23" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Power On" data-tchmi-top="395" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.ToggleOn%/s%">
+</div>
+<div id="TcHmiButton_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="23" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Power Off" data-tchmi-top="418" data-tchmi-top-unit="px" data-tchmi-width="194" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.ToggleOff%/s%">
+</div>
+<div id="TcHmi_Controls_Beckhoff_TcHmiImage_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="421" data-tchmi-height-unit="px" data-tchmi-left="224" data-tchmi-left-unit="px" data-tchmi-src="Images/Layout.png" data-tchmi-top="20" data-tchmi-top-unit="px" data-tchmi-width="254" data-tchmi-width-unit="px">
+</div>
+<div id="LTU_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="342" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/LTU.usercontrol" data-tchmi-top="290" data-tchmi-top-unit="px" data-tchmi-width="31" data-tchmi-width-unit="px">
+</div>
+<div id="PalletStop_00" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="6" data-tchmi-height-unit="px" data-tchmi-left="342" data-tchmi-left-unit="px" data-tchmi-palletstopname="%s%PLC1.MAIN.PalletStops.0.Configuration.Name%/s%" data-tchmi-palletstoprequest="%s%PLC1.MAIN.PalletStops.0.PalletStopHardwareState%/s%" data-tchmi-palletstopstatus="%s%PLC1.MAIN.PalletStops.0.Controls.State%/s%" data-tchmi-target-user-control="UserControls/PalletStop.usercontrol" data-tchmi-top="349" data-tchmi-top-unit="px" data-tchmi-width="31" data-tchmi-width-unit="px" data-tchmi-palletstoppp="%s%PLC1.MAIN.PalletStops.0.Controls.AreaMonitoring%/s%" data-tchmi-opmode="%ctrl%TcHmiToggleSwitch%/ctrl%">
+</div>
+</div>
